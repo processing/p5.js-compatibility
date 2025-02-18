@@ -42,7 +42,7 @@ The below functions are also better supported in JavaScript itself:
 * `shorten()`
 * `sort()`
 * `splice()`
-* `subset()
+* `subset()`
 
 Lastly, `table` IO functions would also be affected:
 
