@@ -1,5 +1,7 @@
 function addShapes(p5, fn, lifecycles) {
   const oldBezierVertex = fn.bezierVertex;
+  const oldEndContour = fn.endContour;
+  const oldEndShape = fn.endShape;
 
   lifecycles.predraw = function() {
     this.splineProperty('ends', this.EXCLUDE);
@@ -47,6 +49,15 @@ function addShapes(p5, fn, lifecycles) {
 
   fn.curveTightness = function(value) {
     return this.splineProperty('tightness', value);
+  }
+
+  fn.endContour = function(mode = this.CLOSE, count) {
+    oldEndContour.call(this, mode, count);
+  }
+
+  fn.endShape = function(mode) {
+    this._renderer._currentShape.at(-1, -1).handlesClose = () => false;
+    oldEndShape.call(this, mode);
   }
 }
 
