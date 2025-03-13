@@ -70,4 +70,38 @@ function addData(p5, fn){
       return list.slice(start, list.length);
     }
   };
+
+  fn.join = function(list, separator) {
+    return list.join(separator);
+  };
+
+  fn.match = function(str, reg) {
+    return str.match(reg);
+  };
+
+  fn.matchAll = function(str, reg) {
+    const re = new RegExp(reg, 'g');
+    let match = re.exec(str);
+    const matches = [];
+    while (match !== null) {
+      matches.push(match);
+      // matched text: match[0]
+      // match start: match.index
+      // capturing group n: match[n]
+      match = re.exec(str);
+    }
+    return matches;
+  };
+
+  fn.split = function(str, delim) {
+    return str.split(delim);
+  };
+
+  fn.trim = function(str) {
+    if (str instanceof Array) {
+      return str.map(this.trim);
+    } else {
+      return str.trim();
+    }
+  };
 }
