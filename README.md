@@ -4,7 +4,7 @@ Addons that add p5.js 1.x to p5.js 2.x
 
 ## What do you think?
 
-Your feedback is welcome [in this survey](https://docs.google.com/forms/d/e/1FAIpQLSeDnDeE2rNyLS-y7L2FncLfzqzt-eWo8t7USktLjAzafuaeKg/viewform) or [on this issue](https://github.com/processing/p5.js/issues/7488)!
+Your feedback is welcome [on this issue](https://github.com/processing/p5.js/issues/7488)!
 
 ## Compatibility Addons
 
