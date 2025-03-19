@@ -18,18 +18,18 @@ Your feedback is welcome [on this issue](https://github.com/processing/p5.js/iss
 
 Most things are the same between p5.js 1.x and 2.0, but there are some big differences: p5.js 2.0 has new capabilities, and it also no longer supports some aspects of p5.js 1.x.
 
-## Do I have to update my 1.x sketches? Maybe!
+## Do I have to update my 1.x sketches?
 
 First, you should try to update the version and see if the sketch still runs! In many cases, no actions are needed - just update the version and you’re all set.
 
 However, if the sketch doesn’t run anymore using 2.0, then you can either update it to use 2.0, or keep it using 1.x. If any of this sounds applicable, then follow the guide below to update your sketches:
 
 * If you want to use p5.js 2.0 features, like variable-weight fonts
-* If you need your sketches to work after August, 2026. At that point, 1.x will no longer be supported, and 2.0 will become the default in the p5.js Editor. If you face any challenges in making updates, please consider joining the discussion and filing bugs to help make p5.js 2.0 a robust tool for the whole community.
+* If you need your sketches to work after August, 2026. At that point, 1.x will no longer be supported, and 2.0 will become the default in the p5.js Editor. If you face any challenges in making updates, please consider [joining the discussion](https://github.com/processing/p5.js/issues/7488) and [filing bugs](https://github.com/processing/p5.js/issues) to help make p5.js 2.0 a robust tool for the whole community.
 * If you want to use an addon or community library that uses p5.js 2.0 featurescal
 * If you want to be able to better integrate with other tools and libraries in the JavaScript ecosystem
 
-## How can I update my 1.x sketches? Three steps!
+## How can I update my 1.x sketches?
 
 Step 1: Switch to 2.0 by using one of the [beta releases](https://github.com/processing/p5.js/releases/) when you import the core library! An [option to switch to 2.0 will be available in the p.js Editor](https://github.com/processing/p5.js-web-editor/pull/3334) once the new release is live!
 
@@ -40,9 +40,9 @@ Step 3: If your 1.x sketch does not run with p5.js 2.0, you have two options:
 * Update your code to match 2.0
 * or (2) Include a compatibility addon (after release, [this will also be possible in the p.js Editor](https://github.com/processing/p5.js-web-editor/pull/3334) once the new release is live.
 
-# Changes to make if you are…
+# Changes to make if your sketch includes…
 
-## …loading Images, Sound, Fonts, and other Assets
+## …loading images, sound, fonts, and other assets
 
 One of the biggest changes in 2.0 is involves how you can include other files, media, and assets. The p5.js 1.x style of using `preload()` does not reflect anymore how assets are loaded on the web, so p5.js 2.0 uses JavaScript’s async/await keywords to support asynchronicity.
 
@@ -92,11 +92,11 @@ async function setup() {
 }
 ```
 
-## …making Shapes
+## …making shapes
 
 Short guide coming soon! For now, you can [find out more here](https://github.com/processing/p5.js/issues/6766)
 
-## …using non-JS Data Structures
+## …using non-JavaScript data structures and functions
 
 One bit change relates to data structures in JavaScript. The following funcitons have been removed in p5.js 2.0. These were originally in p5.js 1.x because, historically, they were also in Processing. However, p5.js is a JavaScript library, and JavaScript objects and key-value maps can be used instead of these functions:
 
