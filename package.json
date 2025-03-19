@@ -1,6 +1,6 @@
 {
   "name": "p5.js-compatibility",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Compatibility addons to support p5.js 1.x features in p5.js 2.0",
   "main": "",
   "files": [
