@@ -22,7 +22,7 @@ Most things are the same between p5.js 1.x and 2.0, but there are some big diffe
 
 First, you should try to update the version and see if the sketch still runs! In many cases, no actions are needed - just update the version and you’re all set.
 
-## However, if the sketch doesn’t run anymore using 2.0, then you can either update it to use 2.0, or keep it using 1.x. If any of this sounds applicable, then follow the guide below to update your sketches:
+However, if the sketch doesn’t run anymore using 2.0, then you can either update it to use 2.0, or keep it using 1.x. If any of this sounds applicable, then follow the guide below to update your sketches:
 
 * If you want to use p5.js 2.0 features, like variable-weight fonts
 * If you need your sketches to work after August, 2026. At that point, 1.x will no longer be supported, and 2.0 will become the default in the p5.js Editor. If you face any challenges in making updates, please consider joining the discussion and filing bugs to help make p5.js 2.0 a robust tool for the whole community.
