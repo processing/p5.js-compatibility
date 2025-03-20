@@ -52,7 +52,7 @@ To play around, check out [the example from the p5.js 1.x `preload()` reference]
 
 This is the p5.js 1.x code, and it will result in a blank “Loading…” screen and then show the image:
 
-```
+```js
 let img;
 
 // Load an image and create a p5.Image object.
@@ -75,15 +75,16 @@ function setup() {
 
 Using p5.js 2.0, and it will result in the red background being shown before the image loads, so people viewing your sketch don’t have to look at a blank screen:
 
-```
+```js
 let img;
 
 async function setup() {
   createCanvas(100, 100);
-  img = await loadImage('/assets/bricks.jpg');
-  
+
   // Make a red background - in 2.0 will be shown while the image loads
   background(255, 0, 0);
+
+  img = await loadImage('/assets/bricks.jpg');
 
   // Draw the image.
   image(img, 0, 0);
