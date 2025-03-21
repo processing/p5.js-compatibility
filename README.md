@@ -93,6 +93,53 @@ async function setup() {
 }
 ```
 
+## …using registerPreloadMethod in a addon or library
+
+If your addon built with p5.js 1.x uses `registerPReloadMethod` such as in this example from [p5.sound.js](https://github.com/processing/p5.sound.js):
+
+```js
+p5.prototype.registerPreloadMethod('loadSound', p5.prototype);
+```
+
+Then to make your addon compatible with **both p5.js 1.x and 2.0**, this this line can be removed (the method `loadSound`, in this example, does not need to be registered) and the method can be updated as follows:
+
+```js
+function loadSound (path) {
+   if(self._incrementPreload && self._decrementPreload){
+     // tTis is the check to determine if preload() is being used, as with
+     // p5.js 1.x or with the preload compatibility addon. The function
+     // returns the soundfile.
+ 
+     self._incrementPreload();
+ 
+     let player = new p5.SoundFile(
+       path,
+       function () {
+         // The callback indicates to preload() that the file is done loading
+         self._decrementPreload();
+       }
+     );
+     return player;
+ 
+   }else{
+     // Otherwise, async/await is being used, so the function returns a promise,
+     // which loads the soundfile asynchronously.
+
+     return new Promise((resolve) => {
+       let player = new p5.SoundFile(
+         path,
+         function () {
+           // The callback resolves the promise when the file is done loading
+           resolve(player);
+         }
+       );
+     });
+   }
+ }
+```
+
+And that's it! You can check this example of making an addon backwards-compatible and work with p5.js 2.0 here: [the p5.sound.js example](https://github.com/processing/p5.sound.js/commit/608ffa93f241538c4fb353544f6d01275911d212)
+
 ## …making shapes
 
 Short guide coming soon! For now, you can [find out more here](https://github.com/processing/p5.js/issues/6766)
@@ -118,4 +165,3 @@ The below functions are also better supported in JavaScript itself:
 * `sort()`
 * `splice()`
 * `subset()`
-
