@@ -38,7 +38,7 @@ Step 2: Try running your sketch! In many cases, this will work right away, and n
 Step 3: If your 1.x sketch does not run with p5.js 2.0, you have two options:
 
 * Update your code to match 2.0
-* or (2) Include a compatibility addon (after release, [this will also be possible in the p.js Editor](https://github.com/processing/p5.js-web-editor/pull/3334) once the new release is live.
+* or include a compatibility addon ([this will also be possible in the p.js Editor](https://github.com/processing/p5.js-web-editor/pull/3334) once the new release is live.
 
 # Changes to make if your sketch includes…
 
@@ -95,13 +95,13 @@ async function setup() {
 
 ## …using registerPreloadMethod in a addon or library
 
-If your addon built with p5.js 1.x uses `registerPReloadMethod` such as in this example from [p5.sound.js](https://github.com/processing/p5.sound.js):
+If your addon built with p5.js 1.x uses `registerPreloadMethod` such as in this example from [p5.sound.js](https://github.com/processing/p5.sound.js):
 
 ```js
 p5.prototype.registerPreloadMethod('loadSound', p5.prototype);
 ```
 
-Then to make your addon compatible with **both p5.js 1.x and 2.0**, this this line can be removed (the method `loadSound`, in this example, does not need to be registered) and the method can be updated as follows:
+Then to make your addon compatible with **both p5.js 1.x *(preload)* and p5.js 2.0 *(promises)***, this this line can be removed (the method `loadSound`, in this example, does not need to be registered) and the method can be updated as follows:
 
 ```js
 function loadSound (path) {
