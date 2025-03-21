@@ -93,6 +93,8 @@ async function setup() {
 }
 ```
 
+If it takes a while to load the image, the sketch will be "paused" on the line `img = await loadImage('/assets/bricks.jpg');` - once the image is loaded, it will resume.
+
 ## …using registerPreloadMethod in a addon or library
 
 If your addon built with p5.js 1.x uses `registerPreloadMethod` such as in this example from [p5.sound.js](https://github.com/processing/p5.sound.js):
