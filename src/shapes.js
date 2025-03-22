@@ -2,6 +2,7 @@ function addShapes(p5, fn, lifecycles) {
   const oldBezierVertex = fn.bezierVertex;
   const oldEndContour = fn.endContour;
   const oldEndShape = fn.endShape;
+  const oldCurveDetail = fn.curveDetail;
 
   lifecycles.predraw = function() {
     this.splineProperty('ends', this.EXCLUDE);
@@ -58,6 +59,33 @@ function addShapes(p5, fn, lifecycles) {
   fn.endShape = function(mode) {
     this._renderer._currentShape.at(-1, -1).handlesClose = () => false;
     oldEndShape.call(this, mode);
+  }
+
+  fn.curve = function(...args) {
+    return this.spline(...args);
+  }
+
+  fn.beginGeometry = function(...args) {
+    return this._renderer.beginGeometry(...args);
+  }
+  fn.endGeometry = function(...args) {
+    return this._renderer.endGeometry(...args);
+  }
+
+  for (const key of ['curveDetail', 'bezierDetail']) {
+    fn[key] = function(numPoints) {
+      // p5 2.0's curveDetail defined *density* while 1.x's defined *absolute number of points.*
+      // The only way to do a true conversion would involve updating the value dynamically based
+      // on the length of the curve. Since this would be complex to do as an addon, we do
+      // the calculation based on an approximate average curve length.
+      const avgLength = Math.hypot(this.width, this.height) / 3;
+      if (numPoints) {
+        const density = numPoints / avgLength;
+        return oldCurveDetail.call(this, density); 
+      } else {
+        return oldCurveDetail.call(this) * avgLength;
+      }
+    }
   }
 }
 
