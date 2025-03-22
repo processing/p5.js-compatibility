@@ -59,6 +59,10 @@ function addShapes(p5, fn, lifecycles) {
     this._renderer._currentShape.at(-1, -1).handlesClose = () => false;
     oldEndShape.call(this, mode);
   }
+
+  fn.curve = function(...args) {
+    return this.spline(...args);
+  }
 }
 
 if (typeof p5 !== undefined) {
