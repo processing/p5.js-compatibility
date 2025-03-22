@@ -63,6 +63,13 @@ function addShapes(p5, fn, lifecycles) {
   fn.curve = function(...args) {
     return this.spline(...args);
   }
+
+  fn.beginGeometry = function(...args) {
+    return this._renderer.beginGeometry(...args);
+  }
+  fn.endGeometry = function(...args) {
+    return this._renderer.endGeometry(...args);
+  }
 }
 
 if (typeof p5 !== undefined) {
