@@ -1,14 +1,14 @@
 # p5.js-compatibility
 
-Even as p5.js 2.0 becomes more stable, p5.js 1.x will continue to be supported until August, 2026. Between 1.x and 2.0, there are many additions, and some breaking changes. In addition to making p5.js 2.0 available as a library, we are working on preparing several compatibility addons that would make it possible to keep using 1.x features that are no longer part of 2.0.
+Even as p5.js 2.0 becomes more stable, p5.js 1.x will continue to be supported until August, 2026. Between 1.x and 2.0, there are many additions, and some breaking changes. In addition to making p5.js 2.0 available as a library, we are working on preparing several compatibility add-on libraries that would make it possible to keep using 1.x features that are no longer part of 2.0.
 
-We are working on three compatibility addons which will make these 1.x features available for 2.0:
+We are working on three compatibility add-on libraries which will make these 1.x features available for 2.0:
 
 1. [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js)
 
 2. [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js)
 
-3. Data structures
+3. [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js)
 
 Your feedback is welcome [on this issue](https://github.com/processing/p5.js/issues/7488)!
 
@@ -24,7 +24,7 @@ However, if the sketch doesn’t run anymore using 2.0, then you can either upda
 
 * If you want to use p5.js 2.0 features, like variable-weight fonts
 * If you need your sketches to work after August, 2026. At that point, 1.x will no longer be supported, and 2.0 will become the default in the p5.js Editor. If you face any challenges in making updates, please consider [joining the discussion](https://github.com/processing/p5.js/issues/7488) and [filing bugs](https://github.com/processing/p5.js/issues) to help make p5.js 2.0 a robust tool for the whole community.
-* If you want to use an addon or community library that uses p5.js 2.0 featurescal
+* If you want to use an add-on library or community library that uses p5.js 2.0 features
 * If you want to be able to better integrate with other tools and libraries in the JavaScript ecosystem
 
 ## How can I update my 1.x sketches?
@@ -36,7 +36,7 @@ Step 2: Try running your sketch! In many cases, this will work right away, and n
 Step 3: If your 1.x sketch does not run with p5.js 2.0, you have two options:
 
 * Update your code to match 2.0
-* or include a compatibility addon ([this will also be possible in the p.js Editor](https://github.com/processing/p5.js-web-editor/pull/3334) once the new release is live.
+* or include a compatibility add-on library ([this will also be possible in the p.js Editor](https://github.com/processing/p5.js-web-editor/pull/3334) once the new release is live.
 
 # Changes to make if your sketch includes…
 
@@ -94,23 +94,23 @@ async function setup() {
 If it takes a while to load the image, the sketch will be "paused" on the line `img = await loadImage('/assets/bricks.jpg');` - once the image is loaded, it will resume.
 
 
-## …using registerPreloadMethod in a addon or library
+## …using registerPreloadMethod in an add-on libraries
 
 Under to hood, returns a **Promise** from each loadImage, loadSound, and similar functions. Promises are widely used in JavaScript, so it is possible to use a callback in p5.js 1.x to create a Promise, but p5.js 1.x doesn't expect promises to be used, so you have to ensure yourself that, for example, your draw function doesn't start running before loading is done. For an example of a Promise using a callback, check out the example below that makes p5.sound.js compatible with both 1.x and 2.0:
 
-If your addon built with p5.js 1.x uses `registerPreloadMethod` such as in this example from [p5.sound.js](https://github.com/processing/p5.sound.js):
+If your add-on library built with p5.js 1.x uses `registerPreloadMethod` such as in this example from [p5.sound.js](https://github.com/processing/p5.sound.js):
 
 ```js
 p5.prototype.registerPreloadMethod('loadSound', p5.prototype);
 ```
 
-Then to make your addon compatible with **both p5.js 1.x *(preload)* and p5.js 2.0 *(promises)***, this this line can be removed (the method `loadSound`, in this example, does not need to be registered) and the method can be updated as follows:
+Then to make your add-on library compatible with **both p5.js 1.x *(preload)* and p5.js 2.0 *(promises)***, this this line can be removed (the method `loadSound`, in this example, does not need to be registered) and the method can be updated as follows:
 
 ```js
 function loadSound (path) {
    if(self._incrementPreload && self._decrementPreload){
      // tTis is the check to determine if preload() is being used, as with
-     // p5.js 1.x or with the preload compatibility addon. The function
+     // p5.js 1.x or with the preload compatibility add-on library. The function
      // returns the soundfile.
  
      self._incrementPreload();
@@ -141,7 +141,7 @@ function loadSound (path) {
  }
 ```
 
-And that's it! You can check this example of making an addon backwards-compatible and work with p5.js 2.0 here: [the p5.sound.js example](https://github.com/processing/p5.sound.js/commit/608ffa93f241538c4fb353544f6d01275911d212)
+And that's it! You can check this example of making an add-on library backwards-compatible and work with p5.js 2.0 here: [the p5.sound.js example](https://github.com/processing/p5.sound.js/commit/608ffa93f241538c4fb353544f6d01275911d212)
 
 ## …making shapes
 
