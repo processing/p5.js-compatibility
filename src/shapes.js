@@ -87,6 +87,13 @@ function addShapes(p5, fn, lifecycles) {
       }
     }
   }
+
+  fn.curvePoint = function(...args) {
+    return this.splinePoint(...args);
+  }
+  fn.curveTangent = function(...args) {
+    return this.splineTangent(...args);
+  }
 }
 
 if (typeof p5 !== undefined) {
