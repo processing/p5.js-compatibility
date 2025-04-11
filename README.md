@@ -164,7 +164,9 @@ function setup() {
 }
 function draw() {
   translate(width/2, height/2);
-  // Draw the curved star shape
+  
+  // Draw the curved star shape - use one of the snippets below, depending on p5.js version
+
   describe("A white star on a gray background in the middle of the canvas")
 }
 ```
@@ -216,7 +218,7 @@ bezierVertex(0, 50);
 bezierVertex(0, 100);
 
 // Bottom-left curve.
-bezierVertex(  0, 50);
+bezierVertex(0, 50);
 bezierVertex(-50, 0);
 bezierVertex(-100, 0);
 
