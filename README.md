@@ -48,7 +48,12 @@ If you’re interested in the history of async [read on here](https://dev.to/lim
 
 To play around, check out [the example from the p5.js 1.x `preload()` reference](https://p5js.org/reference/p5/preload/), but get a very big file instead of bricks.jpg.
 
-This is the p5.js 1.x code, and it will result in a blank “Loading…” screen and then show the image:
+
+
+<table>
+<tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
+<tr><td>Blank “Loading…” screen, then image shown</td><td>Red background while image loads</td></tr>
+<tr><td>
 
 ```js
 let img;
@@ -71,7 +76,7 @@ function setup() {
 }
 ```
 
-Using p5.js 2.0, and it will result in the red background being shown before the image loads, so people viewing your sketch don’t have to look at a blank screen:
+</td><td>
 
 ```js
 let img;
@@ -90,6 +95,9 @@ async function setup() {
   describe('A red brick wall.');
 }
 ```
+
+</td></tr>
+</table>
 
 If it takes a while to load the image, the sketch will be "paused" on the line `img = await loadImage('/assets/bricks.jpg');` - once the image is loaded, it will resume.
 
@@ -145,7 +153,94 @@ And that's it! You can check this example of making an add-on library backwards-
 
 ## …making shapes
 
-Short guide coming soon! For now, you can [find out more here](https://github.com/processing/p5.js/issues/6766)
+If you use `vertex` and `bezierVertex` is the p5.js 1.x code, here's how you can approach updating your code.
+
+The below code is based on the [custom shapes](https://p5js.org/tutorials/custom-shapes-and-smooth-curves/) tutorial:
+
+
+<table>
+<tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
+<tr><td>Blank “Loading…” screen, then image shown</td><td>Red background while image loads</td></tr>
+<tr><td>
+
+
+```js
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  background(100);
+}
+function draw() {
+  translate(width/2, height/2);
+  // Draw the curved star shape.
+  beginShape();
+
+  // Original anchor at top.
+  vertex(0, -100);
+
+  // Top-right curve.
+  bezierVertex(0, -50, 50, 0, 100, 0);
+
+  // Bottom-right curve.
+  bezierVertex(50, 0, 0, 50, 0, 100);
+
+  // Bottom-left curve.
+  bezierVertex(  0, 50, -50, 0, -100, 0);
+
+  // Top-left curve.
+  bezierVertex(-50, 0, 0,-50, 0,-100);
+  endShape();
+}
+```
+
+</td><td>
+
+
+```js
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  background(100);
+}
+function draw() {
+  translate(width/2, height/2);
+
+  // Draw the curved star shape.
+  beginShape();
+
+  // Because the order is three, the curves should be
+  // defined in sets of three after the original anchor
+  bezierOrder(3);
+  
+  // Original anchor at top.
+  bezierVertex(0, -100);
+
+  // Top-right curve.
+  bezierVertex(0, -50);
+  bezierVertex(50, 0);
+  bezierVertex(100, 0);
+
+  // Bottom-right curve.
+  bezierVertex(50, 0);
+  bezierVertex(0, 50);
+  bezierVertex(0, 100);
+
+  // Bottom-left curve.
+  bezierVertex(  0, 50);
+  bezierVertex(-50, 0);
+  bezierVertex(-100, 0);
+
+  // Top-left curve.
+  bezierVertex(-50, 0);
+  bezierVertex(0, -50);
+  bezierVertex(0,-100);
+  
+  endShape();
+}
+```
+
+</td></tr>
+</table>
+
+The [custom shapes tutorial](https://p5js.org/tutorials/custom-shapes-and-smooth-curves/) has a bit more detail on this, but Bézier curves need multiple points. In p5.js 1.x, they use three control points. In p5.js 2.0, that number is set by `bezierOrder`. Then, in p5.js 1.x each `bezierVertex(...)` was actually a set of three points describing a smooth curve. In p5.js 2.0, each `bezierVertext(x, y)` is just one point; you need the first point to anchor, and each curve after that needs 3 points.
 
 ## …using non-JavaScript data structures and functions
 
