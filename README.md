@@ -166,29 +166,29 @@ The below code is based on the [custom shapes](https://p5js.org/tutorials/custom
 
 ```js
 function setup() {
-	createCanvas(windowWidth, windowHeight);
-	background(100);
+  createCanvas(windowWidth, windowHeight);
+  background(100);
 }
 function draw() {
-	translate(width/2, height/2);
-	// Draw the curved star shape.
-	beginShape();
+  translate(width/2, height/2);
+  // Draw the curved star shape.
+  beginShape();
 
-	// Original anchor at top.
-	vertex(0, -100);
+  // Original anchor at top.
+  vertex(0, -100);
 
-	// Top-right curve.
-	bezierVertex(0, -50, 50, 0, 100, 0);
+  // Top-right curve.
+  bezierVertex(0, -50, 50, 0, 100, 0);
 
-	// Bottom-right curve.
-	bezierVertex(50, 0, 0, 50, 0, 100);
+  // Bottom-right curve.
+  bezierVertex(50, 0, 0, 50, 0, 100);
 
-	// Bottom-left curve.
-	bezierVertex(  0, 50, -50, 0, -100, 0);
+  // Bottom-left curve.
+  bezierVertex(  0, 50, -50, 0, -100, 0);
 
-	// Top-left curve.
-	bezierVertex(-50, 0, 0,-50, 0,-100);
-	endShape();
+  // Top-left curve.
+  bezierVertex(-50, 0, 0,-50, 0,-100);
+  endShape();
 }
 ```
 
@@ -197,43 +197,43 @@ function draw() {
 
 ```js
 function setup() {
-	createCanvas(windowWidth, windowHeight);
-	background(100);
+  createCanvas(windowWidth, windowHeight);
+  background(100);
 }
 function draw() {
-	translate(width/2, height/2);
+  translate(width/2, height/2);
 
-	// Draw the curved star shape.
-	beginShape();
+  // Draw the curved star shape.
+  beginShape();
 
-	// Because the order is three, the curves should be
-	// defined in sets of three after the original anchor
-	bezierOrder(3);
-	
-	// Original anchor at top.
-	bezierVertex(0, -100);
+  // Because the order is three, the curves should be
+  // defined in sets of three after the original anchor
+  bezierOrder(3);
+  
+  // Original anchor at top.
+  bezierVertex(0, -100);
 
-	// Top-right curve.
-	bezierVertex(0, -50);
-	bezierVertex(50, 0);
-	bezierVertex(100, 0);
+  // Top-right curve.
+  bezierVertex(0, -50);
+  bezierVertex(50, 0);
+  bezierVertex(100, 0);
 
-	// Bottom-right curve.
-	bezierVertex(50, 0);
-	bezierVertex(0, 50);
-	bezierVertex(0, 100);
+  // Bottom-right curve.
+  bezierVertex(50, 0);
+  bezierVertex(0, 50);
+  bezierVertex(0, 100);
 
-	// Bottom-left curve.
-	bezierVertex(  0, 50);
-	bezierVertex(-50, 0);
-	bezierVertex(-100, 0);
+  // Bottom-left curve.
+  bezierVertex(  0, 50);
+  bezierVertex(-50, 0);
+  bezierVertex(-100, 0);
 
-	// Top-left curve.
-	bezierVertex(-50, 0);
-	bezierVertex(0, -50);
-	bezierVertex(0,-100);
-	
-	endShape();
+  // Top-left curve.
+  bezierVertex(-50, 0);
+  bezierVertex(0, -50);
+  bezierVertex(0,-100);
+  
+  endShape();
 }
 ```
 
