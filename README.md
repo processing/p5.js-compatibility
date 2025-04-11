@@ -58,15 +58,14 @@ To play around, check out [the example from the p5.js 1.x `preload()` reference]
 ```js
 let img;
 
-// Load an image and create a p5.Image object.
 function preload() {
-  img = loadImage('/assets/bricks.jpg');
+  img = loadImage('bricks.jpg');
 }
 
 function setup() {
   createCanvas(100, 100);
-  
-  // Make a red background - will not actually see this in 1.x
+
+  // Red backgorund is ignored
   background(255, 0, 0);
 
   // Draw the image.
@@ -84,10 +83,11 @@ let img;
 async function setup() {
   createCanvas(100, 100);
 
-  // Make a red background - in 2.0 will be shown while the image loads
+  // Red background while asset loads
   background(255, 0, 0);
 
-  img = await loadImage('/assets/bricks.jpg');
+  // Wait for the image to load
+  img = await loadImage('bricks.jpg');
 
   // Draw the image.
   image(img, 0, 0);
@@ -184,7 +184,7 @@ function draw() {
   bezierVertex(50, 0, 0, 50, 0, 100);
 
   // Bottom-left curve.
-  bezierVertex(  0, 50, -50, 0, -100, 0);
+  bezierVertex(0, 50, -50, 0, -100, 0);
 
   // Top-left curve.
   bezierVertex(-50, 0, 0,-50, 0,-100);
@@ -205,9 +205,6 @@ function draw() {
 
   // Draw the curved star shape.
   beginShape();
-
-  // Because the order is three, the curves should be
-  // defined in sets of three after the original anchor
   bezierOrder(3);
   
   // Original anchor at top.
