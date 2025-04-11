@@ -157,13 +157,6 @@ If you use `vertex` and `bezierVertex` is the p5.js 1.x code, here's how you can
 
 The below code is based on the [custom shapes](https://p5js.org/tutorials/custom-shapes-and-smooth-curves/) tutorial:
 
-
-<table>
-<tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
-<tr><td>Blank “Loading…” screen, then image shown</td><td>Red background while image loads</td></tr>
-<tr><td>
-
-
 ```js
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -171,67 +164,68 @@ function setup() {
 }
 function draw() {
   translate(width/2, height/2);
-  // Draw the curved star shape.
-  beginShape();
-
-  // Original anchor at top.
-  vertex(0, -100);
-
-  // Top-right curve.
-  bezierVertex(0, -50, 50, 0, 100, 0);
-
-  // Bottom-right curve.
-  bezierVertex(50, 0, 0, 50, 0, 100);
-
-  // Bottom-left curve.
-  bezierVertex(0, 50, -50, 0, -100, 0);
-
-  // Top-left curve.
-  bezierVertex(-50, 0, 0,-50, 0,-100);
-  endShape();
+  // Draw the curved star shape
+  describe("A white star on a gray background in the middle of the canvas")
 }
+```
+
+<table>
+<tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
+<tr><td>
+
+```js
+// Draw the curved star shape.
+beginShape();
+
+// Original anchor at top.
+vertex(0, -100);
+
+// Top-right curve.
+bezierVertex(0, -50, 50, 0, 100, 0);
+
+// Bottom-right curve.
+bezierVertex(50, 0, 0, 50, 0, 100);
+
+// Bottom-left curve.
+bezierVertex(0, 50, -50, 0, -100, 0);
+
+// Top-left curve.
+bezierVertex(-50, 0, 0,-50, 0,-100);
+endShape();
 ```
 
 </td><td>
 
 
 ```js
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  background(100);
-}
-function draw() {
-  translate(width/2, height/2);
+// Draw the curved star shape.
+beginShape();
+bezierOrder(3);
 
-  // Draw the curved star shape.
-  beginShape();
-  bezierOrder(3);
-  
-  // Original anchor at top.
-  bezierVertex(0, -100);
+// Original anchor at top.
+bezierVertex(0, -100);
 
-  // Top-right curve.
-  bezierVertex(0, -50);
-  bezierVertex(50, 0);
-  bezierVertex(100, 0);
+// Top-right curve.
+bezierVertex(0, -50);
+bezierVertex(50, 0);
+bezierVertex(100, 0);
 
-  // Bottom-right curve.
-  bezierVertex(50, 0);
-  bezierVertex(0, 50);
-  bezierVertex(0, 100);
+// Bottom-right curve.
+bezierVertex(50, 0);
+bezierVertex(0, 50);
+bezierVertex(0, 100);
 
-  // Bottom-left curve.
-  bezierVertex(  0, 50);
-  bezierVertex(-50, 0);
-  bezierVertex(-100, 0);
+// Bottom-left curve.
+bezierVertex(  0, 50);
+bezierVertex(-50, 0);
+bezierVertex(-100, 0);
 
-  // Top-left curve.
-  bezierVertex(-50, 0);
-  bezierVertex(0, -50);
-  bezierVertex(0,-100);
-  
-  endShape();
-}
+// Top-left curve.
+bezierVertex(-50, 0);
+bezierVertex(0, -50);
+bezierVertex(0,-100);
+
+endShape();
 ```
 
 </td></tr>
