@@ -71,7 +71,7 @@ function setup() {
 }
 ```
 
-Using p5.js 2.0, and it will result in the red background being shown before the image loads, so people viewing your sketch don’t have to look at a blank screen:
+Using p5.js 2.0 -  this will result in the red background being shown before the image loads, so people viewing your sketch don’t have to look at a blank screen, but you're still guaranteed that the asset is loaded in the rest of the sketch:
 
 ```js
 let img;
@@ -145,7 +145,83 @@ And that's it! You can check this example of making an add-on library backwards-
 
 ## …making shapes
 
-Short guide coming soon! For now, you can [find out more here](https://github.com/processing/p5.js/issues/6766)
+If you use `vertex` and `bezierVertex` is the p5.js 1.x code, it looks like this (code based on the [custom shapes](https://p5js.org/tutorials/custom-shapes-and-smooth-curves/) tutoral):
+
+```js
+function setup() {
+	createCanvas(windowWidth, windowHeight);
+	background(100);
+}
+function draw() {
+	translate(width/2, height/2);
+	// Draw the curved star shape.
+	beginShape();
+
+	// Original anchor at top.
+	vertex(0, -100);
+
+	// Top-right curve.
+	bezierVertex(0, -50, 50, 0, 100, 0);
+
+	// Bottom-right curve.
+	bezierVertex(50, 0, 0, 50, 0, 100);
+
+	// Bottom-left curve.
+	bezierVertex(  0, 50, -50, 0, -100, 0);
+
+	// Top-left curve.
+	bezierVertex(-50, 0, 0,-50, 0,-100);
+	endShape();
+}
+```
+
+Using p5.js 2.0, the use is more consistent, and allows greater customization. The above code is rewritten as follows:
+
+
+```js
+function setup() {
+	createCanvas(windowWidth, windowHeight);
+	background(100);
+}
+function draw() {
+	translate(width/2, height/2);
+
+	// Draw the curved star shape.
+	beginShape();
+
+	// Because the order is three, the curves should be
+	// defined in sets of three after the original anchor
+	bezierOrder(3);
+	
+	// Original anchor at top.
+	bezierVertex(0, -100);
+
+	// Top-right curve.
+	bezierVertex(0, -50);
+	bezierVertex(50, 0);
+	bezierVertex(100, 0);
+
+	// Bottom-right curve.
+	bezierVertex(50, 0);
+	bezierVertex(0, 50);
+	bezierVertex(0, 100);
+
+	// Bottom-left curve.
+	bezierVertex(  0, 50);
+	bezierVertex(-50, 0);
+	bezierVertex(-100, 0);
+
+	// Top-left curve.
+	bezierVertex(-50, 0);
+	bezierVertex(0, -50);
+	bezierVertex(0,-100);
+	
+	endShape();
+}
+```
+
+
+For more information about this, you can [find out more here](https://github.com/processing/p5.js/issues/6766)
 
 ## …using non-JavaScript data structures and functions
 
