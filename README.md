@@ -48,7 +48,12 @@ If you’re interested in the history of async [read on here](https://dev.to/lim
 
 To play around, check out [the example from the p5.js 1.x `preload()` reference](https://p5js.org/reference/p5/preload/), but get a very big file instead of bricks.jpg.
 
-This is the p5.js 1.x code, and it will result in a blank “Loading…” screen and then show the image:
+
+
+<table>
+<tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
+<tr><td>Blank “Loading…” screen, then image shown</td><td>Red background while image loads</td></tr>
+<tr><td>
 
 ```js
 let img;
@@ -71,7 +76,7 @@ function setup() {
 }
 ```
 
-Using p5.js 2.0 -  this will result in the red background being shown before the image loads, so people viewing your sketch don’t have to look at a blank screen, but you're still guaranteed that the asset is loaded in the rest of the sketch:
+</td><td>
 
 ```js
 let img;
@@ -90,6 +95,9 @@ async function setup() {
   describe('A red brick wall.');
 }
 ```
+
+</td></tr>
+</table>
 
 If it takes a while to load the image, the sketch will be "paused" on the line `img = await loadImage('/assets/bricks.jpg');` - once the image is loaded, it will resume.
 
@@ -145,7 +153,16 @@ And that's it! You can check this example of making an add-on library backwards-
 
 ## …making shapes
 
-If you use `vertex` and `bezierVertex` is the p5.js 1.x code, it looks like this (code based on the [custom shapes](https://p5js.org/tutorials/custom-shapes-and-smooth-curves/) tutoral):
+If you use `vertex` and `bezierVertex` is the p5.js 1.x code, here's how you can approach updating your code.
+
+The below code is based on the [custom shapes](https://p5js.org/tutorials/custom-shapes-and-smooth-curves/) tutorial:
+
+
+<table>
+<tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
+<tr><td>Blank “Loading…” screen, then image shown</td><td>Red background while image loads</td></tr>
+<tr><td>
+
 
 ```js
 function setup() {
@@ -175,7 +192,7 @@ function draw() {
 }
 ```
 
-Using p5.js 2.0, the use is more consistent, and allows greater customization. The above code is rewritten as follows:
+</td><td>
 
 
 ```js
@@ -220,8 +237,10 @@ function draw() {
 }
 ```
 
+</td></tr>
+</table>
 
-For more information about this, you can [find out more here](https://github.com/processing/p5.js/issues/6766)
+The [custom shapes tutorial](https://p5js.org/tutorials/custom-shapes-and-smooth-curves/) has a bit more detail on this, but Bézier curves need multiple points. In p5.js 1.x, they use three control points. In p5.js 2.0, that number is set by `bezierOrder`. Then, in p5.js 1.x each `bezierVertex(...)` was actually a set of three points describing a smooth curve. In p5.js 2.0, each `bezierVertext(x, y)` is just one point; you need the first point to anchor, and each curve after that needs 3 points.
 
 ## …using non-JavaScript data structures and functions
 
