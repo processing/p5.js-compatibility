@@ -35,6 +35,41 @@ function addPreload(p5, fn, lifecycles) {
     }
   }
 
+  const prevLoadBytes = fn.loadBytes;
+  fn.loadBytes = function(...args) {
+    if (!this._isInPreload) return prevLoadBytes.apply(this, args);
+
+    const obj = {};
+    const promise = prevLoadBytes.apply(this, args).then((result) => {
+      obj.bytes = result;
+    });
+    promises.push(promise);
+    return obj;
+  };
+
+  const prevLoadTable = fn.loadTable;
+  fn.loadTable = function(...args) {
+    if (args.length > 1 && args[1] instanceof String) {
+      if (args[1] === 'csv') {
+        args[1] = ',';
+      } else if (args[1] === 'tsv') {
+        args[1] = '\t';
+      } else if (args[1] === 'ssv') {
+        args[1] = ';';
+      }
+    }
+    if (!this._isInPreload) return prevLoadTable.apply(this, args);
+
+    const obj = new p5.Table();
+    const promise = prevLoadTable.apply(this, args).then((result) => {
+      for (const key in result) {
+        obj[key] = result[key];
+      }
+    });
+    promises.push(promise);
+    return obj;
+  };
+
   lifecycles.presetup = async function() {
     if (!window.preload) return;
 
