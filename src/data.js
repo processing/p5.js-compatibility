@@ -1,4 +1,14 @@
 function addData(p5, fn){
+  fn.touchStarted = function (...args) {
+    return this.mousePressed(...args);
+  };
+  fn.touchEnded = function (...args) {
+    return this.mouseReleased(...args);
+  };
+  fn.touchMoved = function (...args) {
+    return this.mouseDragged(...args);
+  };
+
   fn.append = function (array, value) {
     array.push(value);
     return array;
