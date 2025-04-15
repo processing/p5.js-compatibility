@@ -36,7 +36,7 @@ Step 2: Try running your sketch! In many cases, this will work right away, and n
 Step 3: If your 1.x sketch does not run with p5.js 2.0, you have two options:
 
 * Update your code to match 2.0
-* or include a compatibility add-on library ([this will also be possible in the p.js Editor](https://github.com/processing/p5.js-web-editor/pull/3334) once the new release is live.
+* or include a compatibility add-on library (also possible in the p5.js Editor once the new release is live.)
 
 # Changes to make if your sketch includes…
 
