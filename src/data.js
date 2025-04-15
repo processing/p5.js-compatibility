@@ -9,41 +9,17 @@ function addData(p5, fn){
     return this.mouseDragged(...args);
   };
   p5.Element.prototype.touchStarted = function (cb) {
-    if (cb === false) {
-      return this.mousePressed(false);
-    }
-    return this.mousePressed(function (event) {
-      if (this._hasTouchMoveHandler) {
-        this._pointers = this._pointers || {};
-        this._pointers[event.pointerId] = true;
-      }
-      event.target.setPointerCapture(event.pointerId);
-      return cb(event);
-    });
+    return this.mousePressed(cb);
   };
   p5.Element.prototype.touchEnded = function (cb) {
-    if (cb === false) {
-      return this.mouseReleased(false);
-    }
-    return this.mouseReleased(function (event) {
-      if (this._hasTouchMoveHandler) {
-        this._pointers = this._pointers || {};
-        if (this._pointers[event.pointerId]) {
-          event.target.releasePointerCapture(event.pointerId);
-          delete this._pointers[event.pointerId];
-        }
-      }
-      return cb(event);
-    });
+    return this.mouseReleased(cb);
   };
   p5.Element.prototype.touchMoved = function (cb) {
     if (cb === false) {
-      this._hasTouchMoveHandler = false;
       return this.mouseMoved(false);
     }
-    this._hasTouchMoveHandler = true;
     return this.mouseMoved(function (event) {
-      if (Object.keys(this._pointers || {}).length > 0) {
+      if ((event.buttons & 1) !== 0) {
         return cb(event);
       }
     });
