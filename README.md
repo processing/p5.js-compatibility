@@ -48,8 +48,6 @@ If you’re interested in the history of async [read on here](https://dev.to/lim
 
 To play around, check out [the example from the p5.js 1.x `preload()` reference](https://p5js.org/reference/p5/preload/), but get a very big file instead of bricks.jpg.
 
-
-
 <table>
 <tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
 <tr><td>Blank “Loading…” screen, then image shown</td><td>Red background while image loads</td></tr>
@@ -101,6 +99,11 @@ async function setup() {
 
 If it takes a while to load the image, the sketch will be "paused" on the line `img = await loadImage('/assets/bricks.jpg');` - once the image is loaded, it will resume.
 
+Laslty, some loader functions have been updated:
+* The [p5.js 1.x loadTable](https://p5js.org/reference/p5/loadTable/) expects `filename, [extension], [header], [callback], [errorCallback]`
+* The [p5.js 2.0 loadTable](https://betap5js.org/reference/p5/loadTable/) expects `filename, [separator], [header], [callback], [errorCallback]`
+
+All of the above usages in p5.js 1.x remain available with the [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js) compatibility add-on library.
 
 ## …using registerPreloadMethod in an add-on libraries
 
@@ -319,7 +322,7 @@ Additional shanges to shapes in p5.js 1.x, compared to p5.js 2.0, are as follows
   * p5.js 1.x has separate `curveDetail()` and `bezierDetail()`
   * p5.js 2.0 uses `curveDetail()` to cover both, as the more general function
 
-All of the above usages in p5.js 1.x remain available with the shapes.js compatibility add-on library.
+All of the above usages in p5.js 1.x remain available with the [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js) compatibility add-on library.
 
 ## …using data structures and functions that have improved alternatives
 
@@ -343,4 +346,10 @@ The below functions are also better supported in JavaScript itself:
 * `splice()`
 * `subset()`
 
-Additionally, `touchStarted()/touchEnded()/touchMoved()` have been replaced with mouse events.
+Finally, touch and mouse event handling has been combined to improve sketch consistency across devices:
+
+* `touchStarted()`
+* `touchEnded()`
+* `touchMoved()`
+
+All of the above usages in p5.js 1.x remain available with the [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js) compatibility add-on library.
