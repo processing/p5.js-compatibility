@@ -233,6 +233,10 @@ endShape();
 ```
 
 </td></tr>
+</table>
+
+<table>
+<tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
 <tr><td>
 
 ```js
@@ -258,7 +262,7 @@ function setup() {
   // Stop drawing the shape.
   endShape();
 
-  describe('White puzzle piece on a gray background.');
+  describe('White puzzle piece on gray background.');
 }
 ```
 </td><td>
@@ -291,7 +295,7 @@ function setup() {
   // Stop drawing the shape.
   endShape();
 
-  describe('White puzzle piece on a gray background.');
+  describe('White puzzle piece on gray background.');
 }
 ```
 
