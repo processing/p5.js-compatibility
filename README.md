@@ -202,6 +202,8 @@ endShape();
 ```js
 // Draw the curved star shape.
 beginShape();
+
+// The default value is 3, 
 bezierOrder(3);
 
 // Original anchor at top.
@@ -231,9 +233,89 @@ endShape();
 ```
 
 </td></tr>
+<tr><td>
+
+```js
+// https://p5js.org/reference/p5/quadraticVertex/
+function setup() {
+  createCanvas(100, 100);
+
+  background(200);
+
+  // Start drawing the shape.
+  beginShape();
+
+  // Add the curved segments.
+  vertex(20, 20);
+  quadraticVertex(80, 20, 50, 50);
+  quadraticVertex(20, 80, 80, 80);
+
+  // Add the straight segments.
+  vertex(80, 10);
+  vertex(20, 10);
+  vertex(20, 20);
+
+  // Stop drawing the shape.
+  endShape();
+
+  describe('White puzzle piece on a gray background.');
+}
+```
+</td><td>
+
+
+```js
+// Achieve the same curve with bezierOrder(2)
+function setup() {
+  createCanvas(100, 100);
+
+  background(200);
+
+  // Start drawing the shape.
+  beginShape();
+
+  bezierOrder(2);
+
+  // Add the curved segments.
+  bezierVertex(20, 20);
+  bezierVertex(80, 20);
+  bezierVertex(50, 50);
+  bezierVertex(20, 80);
+  bezierVertex(80, 80);
+
+  // Add the straight segments.
+  vertex(80, 10);
+  vertex(20, 10);
+  vertex(20, 20);
+
+  // Stop drawing the shape.
+  endShape();
+
+  describe('White puzzle piece on a gray background.');
+}
+```
+
+</td></tr>
 </table>
 
 The [custom shapes tutorial](https://p5js.org/tutorials/custom-shapes-and-smooth-curves/) has a bit more detail on this, but Bézier curves need multiple points. In p5.js 1.x, they use three control points. In p5.js 2.0, that number is set by `bezierOrder`. Then, in p5.js 1.x each `bezierVertex(...)` was actually a set of three points describing a smooth curve. In p5.js 2.0, each `bezierVertext(x, y)` is just one point; you need the first point to anchor, and each curve after that needs 3 points.
+
+Additional shanges to shapes in p5.js 1.x, compared to p5.js 2.0, are as follows:
+
+* Name changes - functionality stays the same, but the functiona is more consistently named:
+  * `curveVertex()` renamed to `splineVertex()`
+  * `curvePoint()` renamed to `splinePoint()`
+  * `curveTangent()` renamed to `splineTangent()`
+  * `curve()` renamed to `spline()`
+  * `curveTightness(t)` renamed to `splineProperty('tightness', t)`
+* Geometry cleanup
+  * p5.js 1.x has functionality in `beginGeometry()`, `endGeometry()` that is covered in `buildGeometry()`
+  * p5.js 2.0 only keeps `buildGeometry()`
+* Sampling detail cleanup
+  * p5.js 1.x has separate `curveDetail()` and `bezierDetail()`
+  * p5.js 2.0 uses `curveDetail()` to cover both, as the more general function
+
+All of the above usages in p5.js 1.x remain available with the shapes.js compatibility add-on library.
 
 ## …using data structures and functions that have improved alternatives
 
