@@ -323,7 +323,73 @@ Additional shanges to shapes in p5.js 1.x, compared to p5.js 2.0, are as follows
 * Sampling detail cleanup
   * p5.js 1.x has separate `curveDetail()` and `bezierDetail()`
   * p5.js 2.0 uses `curveDetail()` to cover both, as the more general function
-* Defauls updated: in p5.js 1.x, `endContour()` is the same as `endContour(CLOSE)`
+* Defaults updated: in p5.js 1.x, `endContour()` is the same as `endContour(CLOSE)`
+
+Finally, the behavior of `endShape` allows creating different shapes.
+
+
+<table>
+<tr><th>
+  p5.js 1.x
+  
+![image](https://github.com/user-attachments/assets/7e476299-8b7a-4852-8922-65a6165ca0e4)
+</th><th>
+  p5.js 2.x
+  
+![image](https://github.com/user-attachments/assets/f5db1307-6339-4801-89be-b08c76253acf)
+  
+</th></tr>
+<tr><td>
+
+```js
+function setup() {
+  createCanvas(100, 100);
+  background(200);
+  beginShape();
+
+  // Add the first control point.
+  curveVertex(32, 91);
+  curveVertex(32, 91);
+
+  // Add the anchor points.
+  curveVertex(21, 17);
+  curveVertex(68, 19);
+
+  // Add the second control point.
+  curveVertex(84, 91);
+  curveVertex(84, 91);
+
+  // Stop drawing the shape.
+  endShape(CLOSE);
+}
+```
+</td><td>
+
+
+```js
+function setup() {
+  createCanvas(100, 100);
+  background(200);
+  beginShape();
+
+  // Control points not needed
+  // if the goal is a smooth close
+  // curveVertex(32, 91);
+  curveVertex(32, 91);
+
+  // Add the anchor points.
+  curveVertex(21, 17);
+  curveVertex(68, 19);
+
+  // Second control point also excluded
+  // curveVertex(82, 91);
+  curveVertex(82, 91);
+  endShape(CLOSE);
+}
+```
+
+</td></tr>
+</table>
 
 All of the above usages in p5.js 1.x remain available with the [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js) compatibility add-on library.
 
