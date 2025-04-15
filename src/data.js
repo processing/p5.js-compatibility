@@ -8,6 +8,22 @@ function addData(p5, fn){
   fn.touchMoved = function (...args) {
     return this.mouseDragged(...args);
   };
+  p5.Element.prototype.touchStarted = function (cb) {
+    return this.mousePressed(cb);
+  };
+  p5.Element.prototype.touchEnded = function (cb) {
+    return this.mouseReleased(cb);
+  };
+  p5.Element.prototype.touchMoved = function (cb) {
+    if (cb === false) {
+      return this.mouseMoved(false);
+    }
+    return this.mouseMoved(function (event) {
+      if ((event.buttons & 1) !== 0) {
+        return cb(event);
+      }
+    });
+  };
 
   fn.append = function (array, value) {
     array.push(value);
