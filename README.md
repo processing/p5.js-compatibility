@@ -323,6 +323,7 @@ Additional shanges to shapes in p5.js 1.x, compared to p5.js 2.0, are as follows
 * Sampling detail cleanup
   * p5.js 1.x has separate `curveDetail()` and `bezierDetail()`
   * p5.js 2.0 uses `curveDetail()` to cover both, as the more general function
+* Defauls updated: in p5.js 1.x, `endContour()` is the same as `endContour(CLOSE)`
 
 All of the above usages in p5.js 1.x remain available with the [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js) compatibility add-on library.
 
