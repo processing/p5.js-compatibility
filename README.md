@@ -235,7 +235,7 @@ endShape();
 
 The [custom shapes tutorial](https://p5js.org/tutorials/custom-shapes-and-smooth-curves/) has a bit more detail on this, but Bézier curves need multiple points. In p5.js 1.x, they use three control points. In p5.js 2.0, that number is set by `bezierOrder`. Then, in p5.js 1.x each `bezierVertex(...)` was actually a set of three points describing a smooth curve. In p5.js 2.0, each `bezierVertext(x, y)` is just one point; you need the first point to anchor, and each curve after that needs 3 points.
 
-## …using non-JavaScript data structures and functions
+## …using data structures and functions that have improved alternatives
 
 One bit change relates to data structures in JavaScript. The following funcitons have been removed in p5.js 2.0. These were originally in p5.js 1.x because, historically, they were also in Processing. However, p5.js is a JavaScript library, and JavaScript objects and key-value maps can be used instead of these functions:
 
@@ -256,3 +256,5 @@ The below functions are also better supported in JavaScript itself:
 * `sort()`
 * `splice()`
 * `subset()`
+
+Additionally, `touchStarted()/touchEnded()/touchMoved()` have been replaced with mouse events.
