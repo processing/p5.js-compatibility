@@ -102,6 +102,8 @@ If it takes a while to load the image, the sketch will be "paused" on the line `
 Laslty, some loader functions have been updated:
 * The [p5.js 1.x loadTable](https://p5js.org/reference/p5/loadTable/) expects `filename, [extension], [header], [callback], [errorCallback]`
 * The [p5.js 2.0 loadTable](https://betap5js.org/reference/p5/loadTable/) expects `filename, [separator], [header], [callback], [errorCallback]`
+* The [p5.js 1.x loadBytes](https://p5js.org/reference/p5/loadBytes/) returns an object with property `data` containing a `UInt8Array` (required because of preload)
+* The [p5.js 2.0 loadBytes](https://betap5js.org/reference/p5/loadBytes/) returns the `UInt8Array` directly
 
 All of the above usages in p5.js 1.x remain available with the [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js) compatibility add-on library.
 
