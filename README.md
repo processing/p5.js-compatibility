@@ -421,4 +421,6 @@ Finally, touch and mouse event handling has been combined to improve sketch cons
 * `touchEnded()`
 * `touchMoved()`
 
+In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global touches array to see what pointers are active for multitouch support!
+
 All of the above usages in p5.js 1.x remain available with the [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js) compatibility add-on library.
