@@ -1,3 +1,8 @@
+# 2.0 is 🌻 live 🌻
+
+* The [full p5.js 2.0 reference is here](https://beta.p5js.org/)
+* Interested in contributing? Check for [ready for work](https://github.com/orgs/processing/projects/21/views/8) issues!
+
 # p5.js-compatibility
 
 Even as p5.js 2.0 becomes more stable, p5.js 1.x will continue to be supported until August, 2026. Between 1.x and 2.0, there are many additions, and some breaking changes. In addition to making p5.js 2.0 available as a library, we are working on preparing several compatibility add-on libraries that would make it possible to keep using 1.x features that are no longer part of 2.0.
@@ -10,7 +15,9 @@ We are working on three compatibility add-on libraries which will make these 1.x
 
 3. [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js)
 
-Your feedback is welcome [on this issue](https://github.com/processing/p5.js/issues/7488)!
+These add-on libraries are available in the **p5.js Editor** in the Settings > Library Management modal:
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/eb074d21-841a-4649-825c-eb95f7c3c488" />
 
 # How to update p5.js code from 1.x to 2.0
 
