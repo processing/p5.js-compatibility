@@ -374,16 +374,16 @@ function setup() {
 
   // Control points not needed
   // if the goal is a smooth close
-  // curveVertex(32, 91);
-  curveVertex(32, 91);
+  // splineVertex(32, 91);
+  splineVertex(32, 91);
 
   // Add the anchor points.
-  curveVertex(21, 17);
-  curveVertex(68, 19);
+  splineVertex(21, 17);
+  splineVertex(68, 19);
 
   // Second control point also excluded
-  // curveVertex(82, 91);
-  curveVertex(82, 91);
+  // splineVertex(82, 91);
+  splineVertex(82, 91);
   endShape(CLOSE);
 }
 ```
