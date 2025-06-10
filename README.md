@@ -116,7 +116,7 @@ All of the above usages in p5.js 1.x remain available with the [preload.js](http
 
 ## …using registerPreloadMethod in an add-on libraries
 
-Under to hood, returns a **Promise** from each loadImage, loadSound, and similar functions. Promises are widely used in JavaScript, so it is possible to use a callback in p5.js 1.x to create a Promise, but p5.js 1.x doesn't expect promises to be used, so you have to ensure yourself that, for example, your draw function doesn't start running before loading is done. For an example of a Promise using a callback, check out the example below that makes p5.sound.js compatible with both 1.x and 2.0:
+Under the hood, returns a **Promise** from each loadImage, loadSound, and similar functions. Promises are widely used in JavaScript, so it is possible to use a callback in p5.js 1.x to create a Promise, but p5.js 1.x doesn't expect promises to be used, so you have to ensure yourself that, for example, your draw function doesn't start running before loading is done. For an example of a Promise using a callback, check out the example below that makes p5.sound.js compatible with both 1.x and 2.0:
 
 If your add-on library built with p5.js 1.x uses `registerPreloadMethod` such as in this example from [p5.sound.js](https://github.com/processing/p5.sound.js):
 
@@ -431,3 +431,161 @@ Finally, touch and mouse event handling has been combined to improve sketch cons
 In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global touches array to see what pointers are active for multitouch support!
 
 All of the above usages in p5.js 1.x remain available with the [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js) compatibility add-on library.
+
+## …using mouseButton
+
+If you were using `mouseButton` in p5.js 1.x, here's how you can update it in 2.x.
+In 2.X, the `mouseButton` is now an object with props: `left`, `right` and `center`, which are booleans indicating whether each button has been pressed respectively.
+
+```js
+function setup() {
+  createCanvas(100, 100);
+
+  describe(
+    "A gray square. Different shapes appear at its center depending on the mouse button that's clicked."
+  );
+}
+```
+
+<table>
+<tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
+<tr><td>
+
+```js
+function draw() {
+  background(200);
+
+  if (mouseIsPressed === true) {
+    if (mouseButton === LEFT) {
+      circle(50, 50, 50);
+    }
+    if (mouseButton === RIGHT) {
+      square(25, 25, 50);
+    }
+    if (mouseButton === CENTER) {
+      triangle(23, 75, 50, 20, 78, 75);
+    }
+  }
+}
+```
+
+</td><td>
+
+
+```js
+function draw() {
+  background(200);
+
+  if (mouseIsPressed === true) {
+    if (mouseButton.left) {
+      circle(50, 50, 50);
+    }
+    if (mouseButton.right) {
+      square(25, 25, 50);
+    }
+    if (mouseButton.center) {
+      triangle(23, 75, 50, 20, 78, 75);
+    }
+  }
+}
+```
+
+</td></tr>
+</table>
+
+## …using keyCode
+`keyCode` is still a `Number` system variable in 2.x.
+```js
+if (keyCode === 13) {
+  // Code to run if the enter key was pressed.
+}
+```
+
+However, system variables like "ENTER" cannot be used like in 1.x, for example:
+```js
+if (keyCode === ENTER) {
+  // Code to run if the enter key was pressed.
+}
+```
+
+Instead, in 2.x you can use the key function to directly compare the key value.
+```js
+if (key === 'Enter') { // Enter key
+  // Code to run if the Enter key was pressed.
+}
+```
+
+A more detailed comparison.
+
+```js
+let x = 50;
+let y = 50;
+
+function setup() {
+  createCanvas(100, 100);
+
+  background(200);
+
+  describe(
+    'A gray square with a black circle at its center. The circle moves when the user presses an arrow key. It leaves a trail as it moves.'
+  );
+}
+```
+
+<table>
+<tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
+<tr><td>
+
+```js
+function draw() {
+  // Update x and y if an arrow key is pressed.
+  if (keyIsPressed === true) {
+    if (keyCode === UP_ARROW) {
+      y -= 1;
+    } else if (keyCode === DOWN_ARROW) {
+      y += 1;
+    } else if (keyCode === LEFT_ARROW) {
+      x -= 1;
+    } else if (keyCode === RIGHT_ARROW) {
+      x += 1;
+    }
+  }
+
+  // Style the circle.
+  fill(0);
+
+  // Draw the circle at (x, y).
+  circle(x, y, 5);
+}
+```
+
+</td><td>
+
+
+```js
+function draw() {
+  // Update x and y if an arrow key is pressed.
+  if (keyIsPressed === true) {
+    if (key === 'ArrowUp') { // Up arrow key
+      y -= 1;
+    } else if (key === 'ArrowDown') { // Down arrow key
+      y += 1;
+    } else if (key === 'ArrowLeft') { // Left arrow key
+      x -= 1;
+    } else if (key === 'ArrowRight') { // Right arrow key
+      x += 1;
+    }
+  }
+
+  // Style the circle.
+  fill(0);
+
+  // Draw the circle at (x, y).
+  circle(x, y, 5);
+}
+```
+
+</td></tr>
+</table>
+
+More key codes can be found at websites such as [keycode.info](https://www.toptal.com/developers/keycode)
