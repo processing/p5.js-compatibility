@@ -434,7 +434,6 @@ All of the above usages in p5.js 1.x remain available with the [data.js](https:/
 
 ## …using mouseButton
 
-If you were using `mouseButton` in p5.js 1.x, here's how you can update it in 2.x.
 In 2.X, the `mouseButton` is now an object with props: `left`, `right` and `center`, which are booleans indicating whether each button has been pressed respectively.
 
 ```js
