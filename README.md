@@ -507,10 +507,19 @@ if (keyCode === ENTER) {
 }
 ```
 
-Instead, in 2.x you can use the key function to directly compare the key value.
+Instead, in 2.x you can use the `key` or `code` function to directly compare the key value.
+
+Using `key`:
 ```js
-if (key === 'Enter') { // Enter key
+if (key === 'Enter') {
   // Code to run if the Enter key was pressed.
+}
+```
+
+Using `code`:
+```js
+if (code === 'KeyA') { 
+  // Code to run if the 'A' key was pressed.
 }
 ```
 
