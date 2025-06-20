@@ -432,16 +432,18 @@ In p5.js 2.0, instead of having separate methods for mouse and touch, we now use
 
 All of the above usages in p5.js 1.x remain available with the [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js) compatibility add-on library.
 
-## …using mouseButton
+## …using mouseButton events:
 
-In 2.X, the `mouseButton` is now an object with props: `left`, `right` and `center`, which are booleans indicating whether each button has been pressed respectively.
+In 1.X, where the `mouseButton` was a single variable that could have values `left`, `right` and `center`, we cannot detect if the `left` and `right` button have been pressed together.
+In 2.X, the `mouseButton` is now an object with properties: `left`, `right` and `center`, which are booleans indicating whether each button has been pressed respectively.
+This means that we can now detect if multiple buttons are pressed together (like if the `left` and `right` button are pressed together).
 
 ```js
 function setup() {
   createCanvas(100, 100);
 
   describe(
-    "A gray square. Different shapes appear at its center depending on the mouse button that's clicked."
+    "A gray square. Different shapes appear at its center depending on the mouse button that's pressed."
   );
 }
 ```
@@ -453,6 +455,7 @@ function setup() {
 ```js
 function draw() {
   background(200);
+  fill(255, 50);
 
   if (mouseIsPressed === true) {
     if (mouseButton === LEFT) {
@@ -474,6 +477,7 @@ function draw() {
 ```js
 function draw() {
   background(200);
+  fill(255, 50);
 
   if (mouseIsPressed === true) {
     if (mouseButton.left) {
@@ -492,7 +496,10 @@ function draw() {
 </td></tr>
 </table>
 
-## …using keyCode
+Notice that when you press multiple buttons at the same time, multiple shapes can be obtained.
+
+## …using keyCode events:
+
 `keyCode` is still a `Number` system variable in 2.x.
 ```js
 if (keyCode === 13) {
@@ -500,9 +507,9 @@ if (keyCode === 13) {
 }
 ```
 
-However, system variables like "ENTER" cannot be used like in 1.x, for example:
+In 1.x system variables could be used using keyCode
 ```js
-if (keyCode === ENTER) {
+if (keyCode === "ENTER") {
   // Code to run if the enter key was pressed.
 }
 ```
