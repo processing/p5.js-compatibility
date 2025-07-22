@@ -500,7 +500,104 @@ Notice that when you press multiple buttons at the same time, multiple shapes ca
 
 ## …using keyCode events:
 
+The sketch below works in both versions, but try to use it while quickly pressing different arrow keys - you will notice that the event handling in p5.js 2.x is smoother:
+
+```js
+let x = 50;
+let y = 50;
+
+function setup() {
+  createCanvas(100, 100);
+
+  background(200);
+
+  describe(
+    'A gray square with a black circle at its center. The circle moves when the user presses an arrow key. It leaves a trail as it moves.'
+  );
+}
+
+function draw() {
+  // Update x and y when arrow keys are pressed
+  // Using keyIsDown() will work in all version of p5.js
+  if (keyIsPressed) {
+    if (keyIsDown(UP_ARROW)) {
+      y -= 1;
+    } else if (keyIsDown(DOWN_ARROW)) {
+      y += 1;
+    } else if (keyIsDown(LEFT_ARROW)) {
+      x -= 1;
+    } else if (keyIsDown(RIGHT_ARROW)) {
+      x += 1;
+    }
+  }
+  
+  // Style the circle.
+  fill(0);
+
+  // Draw the circle at (x, y).
+  circle(x, y, 5);
+}
+```
+
+
+Although `keyIsDown()` can be used with system-level constants like `UP_ARROW` in all versions, the below shows a bit of what has changed behind the scenes - so if you use `key` or `code` in your sketch, you may need to update your code:
+
+<table>
+<tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
+<tr><td>
+
+```js
+function draw() {
+  // Update x and y when arrow keys are pressed
+  if (keyIsPressed === true) {
+    if (keyCode === UP_ARROW) {
+      y -= 1;
+    } else if (keyCode === DOWN_ARROW) {
+      y += 1;
+    } else if (keyCode === LEFT_ARROW) {
+      x -= 1;
+    } else if (keyCode === RIGHT_ARROW) {
+      x += 1;
+    }
+  }
+
+  // Style the circle.
+  fill(0);
+
+  // Draw the circle at (x, y).
+  circle(x, y, 5);
+}
+```
+
+</td><td>
+
+```js
+function draw() {
+  // Update x and y when arrow keys are pressed
+  if (code === UP_ARROW) {
+    y -= 1;
+  } else if (code === DOWN_ARROW) {
+    y += 1;
+  } else if (code === LEFT_ARROW) {
+    x -= 1;
+  } else if (code === RIGHT_ARROW) {
+    x += 1;
+  }
+
+  // Style the circle.
+  fill(0);
+
+  // Draw the circle at (x, y).
+  circle(x, y, 5);
+}
+```
+
+</td></tr>
+</table>
+
+
 `keyCode` is still a `Number` system variable in 2.x.
+
 ```js
 if (keyCode === 13) {
   // Code to run if the enter key was pressed.
@@ -530,77 +627,4 @@ if (code === 'KeyA') {
 }
 ```
 
-A more detailed comparison.
-
-```js
-let x = 50;
-let y = 50;
-
-function setup() {
-  createCanvas(100, 100);
-
-  background(200);
-
-  describe(
-    'A gray square with a black circle at its center. The circle moves when the user presses an arrow key. It leaves a trail as it moves.'
-  );
-}
-```
-
-<table>
-<tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
-<tr><td>
-
-```js
-function draw() {
-  // Update x and y if an arrow key is pressed.
-  if (keyIsPressed === true) {
-    if (keyCode === UP_ARROW) {
-      y -= 1;
-    } else if (keyCode === DOWN_ARROW) {
-      y += 1;
-    } else if (keyCode === LEFT_ARROW) {
-      x -= 1;
-    } else if (keyCode === RIGHT_ARROW) {
-      x += 1;
-    }
-  }
-
-  // Style the circle.
-  fill(0);
-
-  // Draw the circle at (x, y).
-  circle(x, y, 5);
-}
-```
-
-</td><td>
-
-
-```js
-function draw() {
-  // Update x and y if an arrow key is pressed.
-  if (keyIsPressed === true) {
-    if (key === 'ArrowUp') { // Up arrow key
-      y -= 1;
-    } else if (key === 'ArrowDown') { // Down arrow key
-      y += 1;
-    } else if (key === 'ArrowLeft') { // Left arrow key
-      x -= 1;
-    } else if (key === 'ArrowRight') { // Right arrow key
-      x += 1;
-    }
-  }
-
-  // Style the circle.
-  fill(0);
-
-  // Draw the circle at (x, y).
-  circle(x, y, 5);
-}
-```
-
-</td></tr>
-</table>
-
-More key codes can be found at websites such as [keycode.info](https://www.toptal.com/developers/keycode)
+Both numeric and string key codes can be found at [keycode.info](https://www.toptal.com/developers/keycode).
