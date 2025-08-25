@@ -400,6 +400,57 @@ function setup() {
 
 All of the above usages in p5.js 1.x remain available with the [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js) compatibility add-on library.
 
+## …using `fontWidth()`
+
+In p5.js 2.x, there are two wasy to measure text: [fontWidth(...)](https://beta.p5js.org/reference/p5/fontwidth/) and [textWidth(...)](https://beta.p5js.org/reference/p5/textwidth/). In 2.x, `textWidth()` calculates the text's tight bounding box, which is what p5.js 1.x `fontWidth()` does. In other words:
+
+<table>
+<tr><th>
+  p5.js 1.x
+  </th><th>
+  p5.js 2.x
+
+</th></tr>
+<tr><td>
+
+```js
+function setup() {
+  createCanvas(100, 100);
+  let s = "    Hello    ";
+  console.log(textWidth(s));
+  // Measurement that includes the spaces
+}
+```
+</td><td>
+
+```js
+function setup() {
+  createCanvas(100, 100);
+  let s = "    Hello    ";
+  console.log(fontWidth(s));
+  // Measurement that includes the spaces
+}
+```
+
+</td></tr>
+<tr><td>
+
+_No equivalent_
+</td><td>
+
+```js
+function setup() {
+  createCanvas(100, 100);
+  let s = "    Hello    ";
+  console.log(textWidth(s));
+  // Measurement does not include
+  // leading/trailing spaces
+}
+```
+
+</td></tr>
+</table>
+
 ## …using data structures and functions that have improved alternatives
 
 One bit change relates to data structures in JavaScript. The following funcitons have been removed in p5.js 2.0. These were originally in p5.js 1.x because, historically, they were also in Processing. However, p5.js is a JavaScript library, and JavaScript objects and key-value maps can be used instead of these functions:
