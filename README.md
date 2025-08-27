@@ -402,7 +402,7 @@ All of the above usages in p5.js 1.x remain available with the [shapes.js](https
 
 ## …using `fontWidth()`
 
-In p5.js 2.x, there are two wasy to measure text: [fontWidth(...)](https://beta.p5js.org/reference/p5/fontwidth/) and [textWidth(...)](https://beta.p5js.org/reference/p5/textwidth/). In 2.x, `textWidth()` calculates the text's tight bounding box, which is what p5.js 1.x `fontWidth()` does. In other words:
+In p5.js 2.x, there are two ways to measure text: [fontWidth(...)](https://beta.p5js.org/reference/p5/fontwidth/) and [textWidth(...)](https://beta.p5js.org/reference/p5/textwidth/). In 2.x, `textWidth()` calculates the text's tight bounding box, which is what p5.js 1.x `fontWidth()` does. In other words:
 
 <table>
 <tr><th>
