@@ -1,19 +1,19 @@
 function addPreload(p5, fn, lifecycles) {
   const methods = {
-    'loadImage': () => new p5.Image(1, 1),
-    'loadModel': () => new p5.Geometry(),
-    'loadJSON': () => {},
-    'loadStrings': () => [],
-    'loadFont': (pInst) => new p5.Font(pInst, new FontFace('default', 'default.woff')),
+    loadImage: () => new p5.Image(1, 1),
+    loadModel: () => new p5.Geometry(),
+    loadJSON: () => {},
+    loadStrings: () => [],
+    loadFont: (pInst) => new p5.Font(pInst, new FontFace('default', 'default.woff'))
   };
 
   p5.isPreloadSupported = function() {
     return true;
   };
-  
+
   const promises = [];
   const prevMethods = {};
-  
+
   // Override existing methods to return an object immediately,
   // and keep track of all things being loaded
   for (const method in methods) {
@@ -32,7 +32,7 @@ function addPreload(p5, fn, lifecycles) {
       });
       promises.push(promise);
       return obj;
-    }
+    };
   }
 
   const prevLoadBytes = fn.loadBytes;
@@ -70,7 +70,30 @@ function addPreload(p5, fn, lifecycles) {
     return obj;
   };
 
+  // Storage for registered method callbacks
+  const registeredMethods = {
+    init: [],
+    afterSetup: [],
+    pre: [],
+    post: [],
+    remove: []
+  };
+
+  // Implement registerMethod similar to p5.js v1
+  p5.prototype.registerMethod = function (methodName, callback) {
+    if (registeredMethods[methodName]) {
+      registeredMethods[methodName].push(callback);
+    } else {
+      console.warn(`p5.registerMethod: "${methodName}" is not a valid method name`);
+    }
+  };
+
   lifecycles.presetup = async function() {
+    // Call init callbacks first 
+    for (const callback of registeredMethods.init) {
+      callback.call(this);
+    }
+
     if (!window.preload) return;
 
     this._isInPreload = true;
@@ -79,7 +102,33 @@ function addPreload(p5, fn, lifecycles) {
 
     // Wait for everything to load before letting setup run
     await Promise.all(promises);
-  }
+  };
+
+  // Hook into postsetup for afterSetup callbacks
+  lifecycles.postsetup = function () {
+    for (const callback of registeredMethods.afterSetup) {
+      callback.call(this);
+    }
+  };
+
+  // Hook into other lifecycle events
+  lifecycles.predraw = function () {
+    for (const callback of registeredMethods.pre) {
+      callback.call(this);
+    }
+  };
+
+  lifecycles.postdraw = function () {
+    for (const callback of registeredMethods.post) {
+      callback.call(this);
+    }
+  };
+
+  lifecycles.remove = function () {
+    for (const callback of registeredMethods.remove) {
+      callback.call(this);
+    }
+  };
 }
 
 if (typeof p5 !== undefined) {
