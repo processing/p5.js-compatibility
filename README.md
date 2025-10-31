@@ -7,7 +7,7 @@
 
 Even as p5.js 2.0 becomes more stable, p5.js 1.x will continue to be supported until August, 2026. Between 1.x and 2.0, there are many additions, and some breaking changes. In addition to making p5.js 2.0 available as a library, we are working on preparing several compatibility add-on libraries that would make it possible to keep using 1.x features that are no longer part of 2.0.
 
-We are working on three compatibility add-on libraries which will make these 1.x features available for 2.0.
+We are working on three compatibility add-on libraries which will make these 1.x features available for 2.0:
 
 1. [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js)
 
@@ -24,7 +24,7 @@ These add-on libraries are available in the **p5.js Editor** in the Settings > L
 These changes affect authorign of p5.js sketches. Read on for more information on how to transition, or how to use relevant compatibility addons.
 
 1. Instead of `bezierVertex(x1, y1, x2, y2, x3, y3)` and `quadraticVertex(x1, y1, x2, y2)`, use multiple `bezierVertex(x, y)` calls, and set order with `bezierOrder` _(to revert to 1.x use, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js) compatibility add-on)_
-2.  Instead of `curveVerzex`, use `splineVertex` - and expect `endShape(CLOSE)` to create a smoothly connected shape  _(to revert to 1.x use, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js) compatibility add-on)_
+2.  Instead of `curveVertex`, use `splineVertex` - and expect `endShape(CLOSE)` to create a smoothly connected shape  _(to revert to 1.x use, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js) compatibility add-on)_
 3. Instead of `fontWidth(..)1, use `textWidth(..)` to measure text without space (tight bounding box). In 2.x, `fontWidth(..)` measures text width including trailing space.
 4. Instead of `keyCode === UP_ARROW` (and similar), use `keyIsDown(UP_ARROW)` (work in both versions) or `code === UP_ARROW` (works in 2.x). _(to revert to 1.x use, include [events.js](https://github.com/processing/p5.js-compatibility/blob/main/src/events.js) compatibility add-on)_
 5. Instead of `mouseButton === RIGHT` (and similar), use `mouseButton.right`
