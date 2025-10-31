@@ -7,7 +7,7 @@
 
 Even as p5.js 2.0 becomes more stable, p5.js 1.x will continue to be supported until August, 2026. Between 1.x and 2.0, there are many additions, and some breaking changes. In addition to making p5.js 2.0 available as a library, we are working on preparing several compatibility add-on libraries that would make it possible to keep using 1.x features that are no longer part of 2.0.
 
-We are working on three compatibility add-on libraries which will make these 1.x features available for 2.0:
+We are working on three compatibility add-on libraries which will make these 1.x features available for 2.0.
 
 1. [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js)
 
@@ -18,6 +18,20 @@ We are working on three compatibility add-on libraries which will make these 1.x
 These add-on libraries are available in the **p5.js Editor** in the Settings > Library Management modal:
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/eb074d21-841a-4649-825c-eb95f7c3c488" alt="Screenshot of the Settings model in p5.js Editor showing hte Library Management tab" />
+
+# List of changes
+
+These changes affect authorign of p5.js sketches. Read on for more information on how to transition, or how to use relevant compatibility addons.
+
+1. Instead of `bezierVertex(x1, y1, x2, y2, x3, y3)` and `quadraticVertex(x1, y1, x2, y2)`, use multiple `bezierVertex(x, y)` calls, and set order with `bezierOrder` _(to revert to 1.x use, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js) compatibility add-on)_
+2.  Instead of `curveVerzex`, use `splineVertex` - and expect `endShape(CLOSE)` to create a smoothly connected shape  _(to revert to 1.x use, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js) compatibility add-on)_
+3. Instead of `fontWidth(..)1, use `textWidth(..)` to measure text without space (tight bounding box). In 2.x, `fontWidth(..)` measures text width including trailing space.
+4. Instead of `keyCode === UP_ARROW` (and similar), use `keyIsDown(UP_ARROW)` (work in both versions) or `code === UP_ARROW` (works in 2.x). _(to revert to 1.x use, include [events.js](https://github.com/processing/p5.js-compatibility/blob/main/src/events.js) compatibility add-on)_
+5. Instead of `mouseButton === RIGHT` (and similar), use `mouseButton.right`
+6. Instead of `preload()`, `loadImage(...)`, `loadJSON(...)` and all other `load...` functions return **promises** can be used with `async/await` in `setup()` (or with callbacks)  _(to revert to 1.x use, include [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js) compatibility add-on)_
+7. Affecting only add-on libraries:  read below how `registerPreloadMethod` can support both preload (1.x) and promises (2.x)
+8. Use JavaScript versions of the following functions, which have been removed in 2.x: `createStringDict()`, `createNumberDict()`, `p5.TypedDict`, `p5.NumberDict`, `append()`, `arrayCopy()`, `concat()`, `reverse()`, `shorten()`, `sort()`, `splice()`, `subset()`  _(to revert to 1.x use, include [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js) compatibility add-on)_
+
 
 # How to update p5.js code from 1.x to 2.0
 
@@ -473,14 +487,6 @@ The below functions are also better supported in JavaScript itself:
 * `splice()`
 * `subset()`
 
-Finally, touch and mouse event handling has been combined to improve sketch consistency across devices:
-
-* `touchStarted()`
-* `touchEnded()`
-* `touchMoved()`
-
-In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global touches array to see what pointers are active for multitouch support!
-
 All of the above usages in p5.js 1.x remain available with the [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js) compatibility add-on library.
 
 ## …using mouseButton events:
@@ -548,6 +554,14 @@ function draw() {
 </table>
 
 Notice that when you press multiple buttons at the same time, multiple shapes can be obtained.
+
+Finally, touch and mouse event handling has been combined to improve sketch consistency across devices:
+
+* `touchStarted()`
+* `touchEnded()`
+* `touchMoved()`
+
+In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global touches array to see what pointers are active for multitouch support!
 
 ## …using keyCode events:
 
