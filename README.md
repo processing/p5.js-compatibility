@@ -23,14 +23,14 @@ These add-on libraries are available in the **p5.js Editor** in the Settings > L
 
 These changes affect authorign of p5.js sketches. Read on for more information on how to transition, or how to use relevant compatibility addons.
 
-1. Instead of `bezierVertex(x1, y1, x2, y2, x3, y3)` and `quadraticVertex(x1, y1, x2, y2)`, use multiple `bezierVertex(x, y)` calls, and set order with `bezierOrder` _(to revert to 1.x use, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js) compatibility add-on)_
-2.  Instead of `curveVertex`, use `splineVertex` - and expect `endShape(CLOSE)` to create a smoothly connected shape  _(to revert to 1.x use, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js) compatibility add-on)_
+1. Instead of `bezierVertex(x1, y1, x2, y2, x3, y3)` and `quadraticVertex(x1, y1, x2, y2)`, use multiple `bezierVertex(x, y)` calls, and set order with `bezierOrder` _(to revert to 1.x use, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js))_
+2.  Instead of `curveVertex`, use `splineVertex` - and expect `endShape(CLOSE)` to create a smoothly connected shape  _(for 1.x usage, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js))_
 3. Instead of `fontWidth(..)1, use `textWidth(..)` to measure text without space (tight bounding box). In 2.x, `fontWidth(..)` measures text width including trailing space.
-4. Instead of `keyCode === UP_ARROW` (and similar), use `keyIsDown(UP_ARROW)` (work in both versions) or `code === UP_ARROW` (works in 2.x). _(to revert to 1.x use, include [events.js](https://github.com/processing/p5.js-compatibility/blob/main/src/events.js) compatibility add-on)_
+4. Instead of `keyCode === UP_ARROW` (and similar), use `keyIsDown(UP_ARROW)` (work in both versions) or `code === UP_ARROW` (works in 2.x). _(to revert to 1.x use, include [events.js](https://github.com/processing/p5.js-compatibility/blob/main/src/events.js))_
 5. Instead of `mouseButton === RIGHT` (and similar), use `mouseButton.right`
-6. Instead of `preload()`, `loadImage(...)`, `loadJSON(...)` and all other `load...` functions return **promises** can be used with `async/await` in `setup()` (or with callbacks)  _(to revert to 1.x use, include [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js) compatibility add-on)_
+6. Instead of `preload()`, `loadImage(...)`, `loadJSON(...)` and all other `load...` functions return **promises** can be used with `async/await` in `setup()` (or with callbacks)  _(to revert to 1.x use, include [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js))_
 7. Affecting only add-on libraries:  read below how `registerPreloadMethod` can support both preload (1.x) and promises (2.x)
-8. Use JavaScript versions of the following functions, which have been removed in 2.x: `createStringDict()`, `createNumberDict()`, `p5.TypedDict`, `p5.NumberDict`, `append()`, `arrayCopy()`, `concat()`, `reverse()`, `shorten()`, `sort()`, `splice()`, `subset()`  _(to revert to 1.x use, include [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js) compatibility add-on)_
+8. Use JavaScript versions of the following functions, which have been removed in 2.x: `createStringDict()`, `createNumberDict()`, `p5.TypedDict`, `p5.NumberDict`, `append()`, `arrayCopy()`, `concat()`, `reverse()`, `shorten()`, `sort()`, `splice()`, `subset()`  _(to revert to 1.x use, include [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js))_
 
 
 # How to update p5.js code from 1.x to 2.0
