@@ -19,6 +19,20 @@ These add-on libraries are available in the **p5.js Editor** in the Settings > L
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/eb074d21-841a-4649-825c-eb95f7c3c488" alt="Screenshot of the Settings model in p5.js Editor showing hte Library Management tab" />
 
+# List of changes
+
+These changes affect authoring of p5.js sketches. Read on for more information on how to transition, or how to use relevant compatibility addons.
+
+1. Instead of `bezierVertex(x1, y1, x2, y2, x3, y3)` and `quadraticVertex(x1, y1, x2, y2)`, use multiple `bezierVertex(x, y)` calls, and set order with `bezierOrder` _(to revert to 1.x use, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js))_
+2.  Instead of `curveVertex`, use `splineVertex` - and expect `endShape(CLOSE)` to create a smoothly connected shape  _(for 1.x usage, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js))_
+3. The previous usage of of `textWidth(..)` is now covered by `fontWidth(..)` in 2.x. Use `textWidth(..)` to measure text *without* space (tight bounding box). In 2.x, `fontWidth(..)` measures text width including trailing space.
+4. Instead of `keyCode === UP_ARROW` (and similar), use `keyIsDown(UP_ARROW)` (works in both versions) or `code === UP_ARROW` (works in 2.x). _(to revert to 1.x use, include [events.js](https://github.com/processing/p5.js-compatibility/blob/main/src/events.js))_
+5. Instead of `mouseButton === RIGHT` (and similar), use `mouseButton.right`
+6. Instead of `preload()`, `loadImage(...)`, `loadJSON(...)` and all other `load...` functions return **promises** can be used with `async/await` in `setup()` (or with callbacks)  _(to revert to 1.x use, include [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js))_
+7. Affecting only add-on libraries:  read below how `registerPreloadMethod` can support both preload (1.x) and promises (2.x)
+8. Use JavaScript versions of the following functions, which have been removed in 2.x: `createStringDict()`, `createNumberDict()`, `p5.TypedDict`, `p5.NumberDict`, `append()`, `arrayCopy()`, `concat()`, `reverse()`, `shorten()`, `sort()`, `splice()`, `subset()`  _(to revert to 1.x use, include [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js))_
+9. In 1.x, `createVector()` was a shortcut for `createVector(0, 0, 0)`. In 2.x, p5.js has vectors of any dimension, so you must provide your desired number of zeros. `Use createVector(0, 0)` for a 2D vector and `createVector(0, 0, 0)` for a 3D vector - this will work in all versions.
+
 # How to update p5.js code from 1.x to 2.0
 
 Most things are the same between p5.js 1.x and 2.0, but there are some big differences: p5.js 2.0 has new capabilities, and it also no longer supports some aspects of p5.js 1.x.
@@ -45,9 +59,9 @@ Step 3: If your 1.x sketch does not run with p5.js 2.0, you have two options:
 * Update your code to match 2.0
 * or include a compatibility add-on library (also possible in the p5.js Editor once the new release is live.)
 
-# Changes to make if your sketch includes…
+# Changes to make if your sketch includes...
 
-## …loading images, sound, fonts, and other assets
+## ...loading images, sound, fonts, and other assets (`preload.js`)
 
 One of the biggest changes in 2.0 is involves how you can include other files, media, and assets. The p5.js 1.x style of using `preload()` does not reflect anymore how assets are loaded on the web, so p5.js 2.0 uses JavaScript’s async/await keywords to support asynchronicity.
 
@@ -114,7 +128,7 @@ Laslty, some loader functions have been updated:
 
 All of the above usages in p5.js 1.x remain available with the [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js) compatibility add-on library.
 
-## …using registerPreloadMethod in an add-on libraries
+## ...using registerPreloadMethod in an add-on libraries
 
 Under the hood, returns a **Promise** from each loadImage, loadSound, and similar functions. Promises are widely used in JavaScript, so it is possible to use a callback in p5.js 1.x to create a Promise, but p5.js 1.x doesn't expect promises to be used, so you have to ensure yourself that, for example, your draw function doesn't start running before loading is done. For an example of a Promise using a callback, check out the example below that makes p5.sound.js compatible with both 1.x and 2.0:
 
@@ -163,7 +177,7 @@ function loadSound (path) {
 
 And that's it! You can check this example of making an add-on library backwards-compatible and work with p5.js 2.0 here: [the p5.sound.js example](https://github.com/processing/p5.sound.js/commit/608ffa93f241538c4fb353544f6d01275911d212)
 
-## …making shapes
+## ...making shapes  (`shapes.js`)
 
 If you use `vertex` and `bezierVertex` is the p5.js 1.x code, here's how you can approach updating your code.
 
@@ -400,7 +414,7 @@ function setup() {
 
 All of the above usages in p5.js 1.x remain available with the [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js) compatibility add-on library.
 
-## …using `fontWidth()`
+## ...using `fontWidth()`
 
 In p5.js 2.x, there are two ways to measure text: [fontWidth(...)](https://beta.p5js.org/reference/p5/fontwidth/) and [textWidth(...)](https://beta.p5js.org/reference/p5/textwidth/). In 2.x, `textWidth()` calculates the text's tight bounding box, which is what p5.js 1.x `fontWidth()` does. In other words:
 
@@ -451,7 +465,7 @@ function setup() {
 </td></tr>
 </table>
 
-## …using data structures and functions that have improved alternatives
+## ...using data structures and functions that have improved alternatives (`data.js`)
 
 One bit change relates to data structures in JavaScript. The following funcitons have been removed in p5.js 2.0. These were originally in p5.js 1.x because, historically, they were also in Processing. However, p5.js is a JavaScript library, and JavaScript objects and key-value maps can be used instead of these functions:
 
@@ -473,17 +487,9 @@ The below functions are also better supported in JavaScript itself:
 * `splice()`
 * `subset()`
 
-Finally, touch and mouse event handling has been combined to improve sketch consistency across devices:
-
-* `touchStarted()`
-* `touchEnded()`
-* `touchMoved()`
-
-In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global touches array to see what pointers are active for multitouch support!
-
 All of the above usages in p5.js 1.x remain available with the [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js) compatibility add-on library.
 
-## …using mouseButton events:
+## ...using mouseButton events
 
 In 1.X, where the `mouseButton` was a single variable that could have values `left`, `right` and `center`, we cannot detect if the `left` and `right` button have been pressed together.
 In 2.X, the `mouseButton` is now an object with properties: `left`, `right` and `center`, which are booleans indicating whether each button has been pressed respectively.
@@ -549,7 +555,45 @@ function draw() {
 
 Notice that when you press multiple buttons at the same time, multiple shapes can be obtained.
 
-## …using keyCode events:
+Finally, touch and mouse event handling has been combined to improve sketch consistency across devices. In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global [`touches`](https://beta.p5js.org/reference/p5/touches/) array to see what pointers are active for multitouch support!
+
+<table>
+<tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
+<tr><td>
+
+* `touchStarted()`
+* `touchEnded()`
+* `touchMoved()`
+
+</td><td>
+
+```js
+// On a touchscreen device, touch the canvas using one or more fingers
+// at the same time.
+
+function setup() {
+  createCanvas(100, 100);
+
+  describe(
+    'A gray square. White circles appear where the user touches the square.'
+  );
+}
+
+function draw() {
+  background(200);
+
+  // Draw a circle at each touch point.
+  for (let touch of touches) {
+    circle(touch.x, touch.y, 40);
+  }
+}
+```
+
+</td></tr>
+</table>
+
+
+## ...using keyCode events:
 
 The sketch below works in both versions, but try to use it while quickly pressing different arrow keys - you will notice that the event handling in p5.js 2.x is smoother:
 
