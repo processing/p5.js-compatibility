@@ -1,4 +1,84 @@
 function addData(p5, fn) {
+  // 1. Restore 1.x numeric keyCode constants
+  p5.prototype.BACKSPACE = 8;
+  p5.prototype.DELETE = 46;
+  p5.prototype.ENTER = 13;
+  p5.prototype.RETURN = 13;
+  p5.prototype.TAB = 9;
+  p5.prototype.ESCAPE = 27;
+  p5.prototype.SHIFT = 16;
+  p5.prototype.CONTROL = 17;
+  p5.prototype.OPTION = 18;
+  p5.prototype.ALT = 18;
+  p5.prototype.UP_ARROW = 38;
+  p5.prototype.DOWN_ARROW = 40;
+  p5.prototype.LEFT_ARROW = 37;
+  p5.prototype.RIGHT_ARROW = 39;
+
+  const CODE_TO_KEYCODE = {
+    ArrowUp: 38,
+    ArrowDown: 40,
+    ArrowLeft: 37,
+    ArrowRight: 39,
+    ShiftLeft: 16,
+    ShiftRight: 16,
+    ControlLeft: 17,
+    ControlRight: 17,
+    AltLeft: 18,
+    AltRight: 18,
+    Backspace: 8,
+    Tab: 9,
+    Enter: 13,
+    Escape: 27,
+    Delete: 46,
+  };
+
+  // Internal set to track which numeric keyCodes are currently pressed
+  const _pressedKeyCodes = new Set();
+
+  // Override key event handlers to set numeric keyCode from event.keyCode and maintain the pressed-keys set.
+  const _origOnKeyDown = fn._onkeydown;
+
+  fn._onkeydown = function (e) {
+    // Set the numeric keyCode from the browser's (deprecated but available) event.keyCode
+    const numericCode = e.keyCode || CODE_TO_KEYCODE[e.code] || 0;
+    this.keyCode = numericCode;
+    _pressedKeyCodes.add(numericCode);
+
+    // Call original handler
+    if (typeof _origOnKeyDown === "function") {
+      _origOnKeyDown.call(this, e);
+    }
+  };
+
+  const _origOnKeyUp = fn._onkeyup;
+  fn._onkeyup = function (e) {
+    const numericCode = e.keyCode || CODE_TO_KEYCODE[e.code] || 0;
+    this.keyCode = numericCode;
+    _pressedKeyCodes.delete(numericCode);
+
+    if (typeof _origOnKeyUp === "function") {
+      _origOnKeyUp.call(this, e);
+    }
+  };
+
+  // 6. Wrap keyIsDown() to accept numeric keyCodes
+  //    In 2.x, keyIsDown() expects a string (e.g. 'ArrowUp').
+  //    With this wrapper, keyIsDown(38) and keyIsDown(UP_ARROW) both work
+  //    with the restored numeric constant.
+  const _origKeyIsDown = fn.keyIsDown;
+  fn.keyIsDown = function (code) {
+    if (typeof code === "number") {
+      // Check our internal pressed-keys set for numeric codes
+      return _pressedKeyCodes.has(code);
+    }
+    // For string args, delegate to the original 2.x implementation
+    if (typeof _origKeyIsDown === "function") {
+      return _origKeyIsDown.call(this, code);
+    }
+    return false;
+  };
+  
   fn.touchStarted = function (...args) {
     return this.mousePressed(...args);
   };
@@ -327,96 +407,6 @@ function addData(p5, fn) {
     maxKey() {
       return this._keyTest(-1);
     }
-  };
-
-  // ============================================================
-  // Keyboard Events & KeyCode Backward Compatibility (1.x → 2.x)
-  // ============================================================
-  //
-  // In p5.js 2.x, keyboard constants changed from numeric values
-  // (e.g. UP_ARROW = 38) to strings (e.g. UP_ARROW = 'ArrowUp').
-  // The code below restores 1.x numeric behavior so that legacy
-  // sketches using `keyCode === LEFT_ARROW` continue to work.
-
-  // 1. Restore 1.x numeric keyCode constants
-  p5.prototype.BACKSPACE = 8;
-  p5.prototype.DELETE = 46;
-  p5.prototype.ENTER = 13;
-  p5.prototype.RETURN = 13;
-  p5.prototype.TAB = 9;
-  p5.prototype.ESCAPE = 27;
-  p5.prototype.SHIFT = 16;
-  p5.prototype.CONTROL = 17;
-  p5.prototype.OPTION = 18;
-  p5.prototype.ALT = 18;
-  p5.prototype.UP_ARROW = 38;
-  p5.prototype.DOWN_ARROW = 40;
-  p5.prototype.LEFT_ARROW = 37;
-  p5.prototype.RIGHT_ARROW = 39;
-
-  // 2. Mapping from KeyboardEvent.code strings → 1.x numeric keyCodes
-  //    Only includes keys that have corresponding p5.prototype constants.
-  //    For all other keys, the browser's event.keyCode (still universally
-  //    supported despite being deprecated) provides the numeric value.
-  const CODE_TO_KEYCODE = {
-    'ArrowUp': 38,
-    'ArrowDown': 40,
-    'ArrowLeft': 37,
-    'ArrowRight': 39,
-    'ShiftLeft': 16, 'ShiftRight': 16,
-    'ControlLeft': 17, 'ControlRight': 17,
-    'AltLeft': 18, 'AltRight': 18,
-    'Backspace': 8,
-    'Tab': 9,
-    'Enter': 13,
-    'Escape': 27,
-    'Delete': 46,
-  };
-
-  // 4. Internal set to track which numeric keyCodes are currently pressed
-  const _pressedKeyCodes = new Set();
-
-  // 5. Override key event handlers to set numeric keyCode from event.keyCode
-  //    and maintain the pressed-keys set.
-  const _origOnKeyDown = fn._onkeydown;
-  fn._onkeydown = function (e) {
-    // Set the numeric keyCode from the browser's (deprecated but available) event.keyCode
-    const numericCode = e.keyCode || CODE_TO_KEYCODE[e.code] || 0;
-    this.keyCode = numericCode;
-    _pressedKeyCodes.add(numericCode);
-
-    // Call original handler
-    if (typeof _origOnKeyDown === 'function') {
-      _origOnKeyDown.call(this, e);
-    }
-  };
-
-  const _origOnKeyUp = fn._onkeyup;
-  fn._onkeyup = function (e) {
-    const numericCode = e.keyCode || CODE_TO_KEYCODE[e.code] || 0;
-    this.keyCode = numericCode;
-    _pressedKeyCodes.delete(numericCode);
-
-    if (typeof _origOnKeyUp === 'function') {
-      _origOnKeyUp.call(this, e);
-    }
-  };
-
-  // 6. Wrap keyIsDown() to accept numeric keyCodes
-  //    In 2.x, keyIsDown() expects a string (e.g. 'ArrowUp').
-  //    With this wrapper, keyIsDown(38) and keyIsDown(UP_ARROW) both work
-  //    with the restored numeric constant.
-  const _origKeyIsDown = fn.keyIsDown;
-  fn.keyIsDown = function (code) {
-    if (typeof code === 'number') {
-      // Check our internal pressed-keys set for numeric codes
-      return _pressedKeyCodes.has(code);
-    }
-    // For string args, delegate to the original 2.x implementation
-    if (typeof _origKeyIsDown === 'function') {
-      return _origKeyIsDown.call(this, code);
-    }
-    return false;
   };
 }
 
