@@ -1,5 +1,8 @@
 function addData(p5, fn) {
-  // 1. Restore 1.x numeric keyCode constants
+  /**
+   * legacy keyboard constants — they map human-readable names to their corresponding numeric key codes.
+   * key codes - (the old event.keyCode values from the DOM API).
+   */
   p5.prototype.BACKSPACE = 8;
   p5.prototype.DELETE = 46;
   p5.prototype.ENTER = 13;
@@ -15,6 +18,10 @@ function addData(p5, fn) {
   p5.prototype.LEFT_ARROW = 37;
   p5.prototype.RIGHT_ARROW = 39;
 
+  /**
+   * lookup table (a plain object used as a dictionary)
+   * it maps modern string-based key codes → old numeric key codes.
+   */
   const CODE_TO_KEYCODE = {
     ArrowUp: 38,
     ArrowDown: 40,
@@ -33,24 +40,33 @@ function addData(p5, fn) {
     Delete: 46,
   };
 
-  // Internal set to track which numeric keyCodes are currently pressed
+  /**
+   * _pressedKeyCodes - Internal set to track which numeric keyCodes are currently pressed.
+   * _origOnKeyDown - Override key event handlers to set numeric keyCode from event.keyCode and maintain the pressed-keys set.
+   */
   const _pressedKeyCodes = new Set();
-
-  // Override key event handlers to set numeric keyCode from event.keyCode and maintain the pressed-keys set.
   const _origOnKeyDown = fn._onkeydown;
 
+
+  /**
+   * custom override of p5.js's internal _onkeydown handler.
+   * It intercepts every keydown browser event to patch in backward-compatible behavior for p5.js v1.x sketches running on v2.x.
+   * @param {*} e 
+   */
   fn._onkeydown = function (e) {
-    // Set the numeric keyCode from the browser's (deprecated but available) event.keyCode
+
     const numericCode = e.keyCode || CODE_TO_KEYCODE[e.code] || 0;
     this.keyCode = numericCode;
     _pressedKeyCodes.add(numericCode);
 
-    // Call original handler
     if (typeof _origOnKeyDown === "function") {
       _origOnKeyDown.call(this, e);
     }
   };
 
+  /**
+   * keyup event override — the mirror image of the _onkeydown override
+   */
   const _origOnKeyUp = fn._onkeyup;
   fn._onkeyup = function (e) {
     const numericCode = e.keyCode || CODE_TO_KEYCODE[e.code] || 0;
@@ -62,17 +78,14 @@ function addData(p5, fn) {
     }
   };
 
-  // 6. Wrap keyIsDown() to accept numeric keyCodes
-  //    In 2.x, keyIsDown() expects a string (e.g. 'ArrowUp').
-  //    With this wrapper, keyIsDown(38) and keyIsDown(UP_ARROW) both work
-  //    with the restored numeric constant.
+  /**
+   * This block wraps keyIsDown() to make it accept both the old numeric codes (v1.x) and the new string codes (v2.x).
+   */
   const _origKeyIsDown = fn.keyIsDown;
   fn.keyIsDown = function (code) {
     if (typeof code === "number") {
-      // Check our internal pressed-keys set for numeric codes
       return _pressedKeyCodes.has(code);
     }
-    // For string args, delegate to the original 2.x implementation
     if (typeof _origKeyIsDown === "function") {
       return _origKeyIsDown.call(this, code);
     }
@@ -115,12 +128,12 @@ function addData(p5, fn) {
     let start;
     let end;
 
-    if (typeof length !== 'undefined') {
+    if (typeof length !== "undefined") {
       end = Math.min(length, src.length);
       start = dstPosition;
       src = src.slice(srcPosition, end + srcPosition);
     } else {
-      if (typeof dst !== 'undefined') {
+      if (typeof dst !== "undefined") {
         // src, dst, length
         // rename  so we don't get confused
         end = dst;
@@ -144,7 +157,7 @@ function addData(p5, fn) {
 
   fn.concat = (list0, list1) => list0.concat(list1);
 
-  fn.reverse = list => list.reverse();
+  fn.reverse = (list) => list.reverse();
 
   fn.shorten = function (list) {
     list.pop();
@@ -154,7 +167,7 @@ function addData(p5, fn) {
   fn.sort = function (list, count) {
     let arr = count ? list.slice(0, Math.min(count, list.length)) : list;
     const rest = count ? list.slice(Math.min(count, list.length)) : [];
-    if (typeof arr[0] === 'string') {
+    if (typeof arr[0] === "string") {
       arr = arr.sort();
     } else {
       arr = arr.sort((a, b) => a - b);
@@ -170,7 +183,7 @@ function addData(p5, fn) {
   };
 
   fn.subset = function (list, start, count) {
-    if (typeof count !== 'undefined') {
+    if (typeof count !== "undefined") {
       return list.slice(start, start + count);
     } else {
       return list.slice(start, list.length);
@@ -186,7 +199,7 @@ function addData(p5, fn) {
   };
 
   fn.matchAll = function (str, reg) {
-    const re = new RegExp(reg, 'g');
+    const re = new RegExp(reg, "g");
     let match = re.exec(str);
     const matches = [];
     while (match !== null) {
@@ -250,7 +263,7 @@ function addData(p5, fn) {
       if (this._validate(value)) {
         this.data[key] = value;
       } else {
-        console.log('Those values dont work for this dictionary type.');
+        console.log("Those values dont work for this dictionary type.");
       }
     }
 
@@ -261,14 +274,14 @@ function addData(p5, fn) {
     }
 
     create(key, value) {
-      if (key instanceof Object && typeof value === 'undefined') {
+      if (key instanceof Object && typeof value === "undefined") {
         this._addObj(key);
-      } else if (typeof key !== 'undefined') {
+      } else if (typeof key !== "undefined") {
         this.set(key, value);
       } else {
         console.log(
-          'In order to create a new Dictionary entry you must pass ' +
-          'an object or a key, value pair'
+          "In order to create a new Dictionary entry you must pass " +
+          "an object or a key, value pair",
         );
       }
     }
@@ -292,14 +305,14 @@ function addData(p5, fn) {
     }
 
     saveTable(filename) {
-      let output = '';
+      let output = "";
 
       for (const key in this.data) {
         output += `${key},${this.data[key]}\n`;
       }
 
-      const blob = new Blob([output], { type: 'text/csv' });
-      fn.downloadFile(blob, filename || 'mycsv', 'csv');
+      const blob = new Blob([output], { type: "text/csv" });
+      fn.downloadFile(blob, filename || "mycsv", "csv");
     }
 
     saveJSON(filename, opt) {
@@ -317,7 +330,7 @@ function addData(p5, fn) {
     }
 
     _validate(value) {
-      return typeof value === 'string';
+      return typeof value === "string";
     }
   };
 
@@ -327,7 +340,7 @@ function addData(p5, fn) {
     }
 
     _validate(value) {
-      return typeof value === 'number';
+      return typeof value === "number";
     }
 
     add(key, amount) {
@@ -361,7 +374,7 @@ function addData(p5, fn) {
     _valueTest(flip) {
       if (Object.keys(this.data).length === 0) {
         throw new Error(
-          'Unable to search for a minimum or maximum value on an empty NumberDict'
+          "Unable to search for a minimum or maximum value on an empty NumberDict",
         );
       } else if (Object.keys(this.data).length === 1) {
         return this.data[Object.keys(this.data)[0]];
@@ -386,7 +399,7 @@ function addData(p5, fn) {
 
     _keyTest(flip) {
       if (Object.keys(this.data).length === 0) {
-        throw new Error('Unable to use minValue on an empty NumberDict');
+        throw new Error("Unable to use minValue on an empty NumberDict");
       } else if (Object.keys(this.data).length === 1) {
         return Object.keys(this.data)[0];
       } else {
