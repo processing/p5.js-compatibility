@@ -1,5 +1,5 @@
-function addData(p5, fn) {
-  /**
+function addData(p5, fn){
+   /**
    * legacy keyboard constants — they map human-readable names to their corresponding numeric key codes.
    * key codes - (the old event.keyCode values from the DOM API).
    */
@@ -69,6 +69,7 @@ function addData(p5, fn) {
    */
   const _origOnKeyUp = fn._onkeyup;
   fn._onkeyup = function (e) {
+
     const numericCode = e.keyCode || CODE_TO_KEYCODE[e.code] || 0;
     this.keyCode = numericCode;
     _pressedKeyCodes.delete(numericCode);
@@ -82,10 +83,13 @@ function addData(p5, fn) {
    * This block wraps keyIsDown() to make it accept both the old numeric codes (v1.x) and the new string codes (v2.x).
    */
   const _origKeyIsDown = fn.keyIsDown;
+
   fn.keyIsDown = function (code) {
+
     if (typeof code === "number") {
       return _pressedKeyCodes.has(code);
     }
+
     if (typeof _origKeyIsDown === "function") {
       return _origKeyIsDown.call(this, code);
     }
@@ -128,12 +132,12 @@ function addData(p5, fn) {
     let start;
     let end;
 
-    if (typeof length !== "undefined") {
+    if (typeof length !== 'undefined') {
       end = Math.min(length, src.length);
       start = dstPosition;
       src = src.slice(srcPosition, end + srcPosition);
     } else {
-      if (typeof dst !== "undefined") {
+      if (typeof dst !== 'undefined') {
         // src, dst, length
         // rename  so we don't get confused
         end = dst;
@@ -157,7 +161,7 @@ function addData(p5, fn) {
 
   fn.concat = (list0, list1) => list0.concat(list1);
 
-  fn.reverse = (list) => list.reverse();
+  fn.reverse = list => list.reverse();
 
   fn.shorten = function (list) {
     list.pop();
@@ -167,7 +171,7 @@ function addData(p5, fn) {
   fn.sort = function (list, count) {
     let arr = count ? list.slice(0, Math.min(count, list.length)) : list;
     const rest = count ? list.slice(Math.min(count, list.length)) : [];
-    if (typeof arr[0] === "string") {
+    if (typeof arr[0] === 'string') {
       arr = arr.sort();
     } else {
       arr = arr.sort((a, b) => a - b);
@@ -183,23 +187,23 @@ function addData(p5, fn) {
   };
 
   fn.subset = function (list, start, count) {
-    if (typeof count !== "undefined") {
+    if (typeof count !== 'undefined') {
       return list.slice(start, start + count);
     } else {
       return list.slice(start, list.length);
     }
   };
 
-  fn.join = function (list, separator) {
+  fn.join = function(list, separator) {
     return list.join(separator);
   };
 
-  fn.match = function (str, reg) {
+  fn.match = function(str, reg) {
     return str.match(reg);
   };
 
-  fn.matchAll = function (str, reg) {
-    const re = new RegExp(reg, "g");
+  fn.matchAll = function(str, reg) {
+    const re = new RegExp(reg, 'g');
     let match = re.exec(str);
     const matches = [];
     while (match !== null) {
@@ -212,11 +216,11 @@ function addData(p5, fn) {
     return matches;
   };
 
-  fn.split = function (str, delim) {
+  fn.split = function(str, delim) {
     return str.split(delim);
   };
 
-  fn.trim = function (str) {
+  fn.trim = function(str) {
     if (str instanceof Array) {
       return str.map(this.trim);
     } else {
@@ -263,7 +267,7 @@ function addData(p5, fn) {
       if (this._validate(value)) {
         this.data[key] = value;
       } else {
-        console.log("Those values dont work for this dictionary type.");
+        console.log('Those values dont work for this dictionary type.');
       }
     }
 
@@ -274,14 +278,14 @@ function addData(p5, fn) {
     }
 
     create(key, value) {
-      if (key instanceof Object && typeof value === "undefined") {
+      if (key instanceof Object && typeof value === 'undefined') {
         this._addObj(key);
-      } else if (typeof key !== "undefined") {
+      } else if (typeof key !== 'undefined') {
         this.set(key, value);
       } else {
         console.log(
-          "In order to create a new Dictionary entry you must pass " +
-          "an object or a key, value pair",
+          'In order to create a new Dictionary entry you must pass ' +
+          'an object or a key, value pair'
         );
       }
     }
@@ -305,14 +309,14 @@ function addData(p5, fn) {
     }
 
     saveTable(filename) {
-      let output = "";
+      let output = '';
 
       for (const key in this.data) {
         output += `${key},${this.data[key]}\n`;
       }
 
-      const blob = new Blob([output], { type: "text/csv" });
-      fn.downloadFile(blob, filename || "mycsv", "csv");
+      const blob = new Blob([output], { type: 'text/csv' });
+      fn.downloadFile(blob, filename || 'mycsv', 'csv');
     }
 
     saveJSON(filename, opt) {
@@ -330,7 +334,7 @@ function addData(p5, fn) {
     }
 
     _validate(value) {
-      return typeof value === "string";
+      return typeof value === 'string';
     }
   };
 
@@ -340,7 +344,7 @@ function addData(p5, fn) {
     }
 
     _validate(value) {
-      return typeof value === "number";
+      return typeof value === 'number';
     }
 
     add(key, amount) {
@@ -374,7 +378,7 @@ function addData(p5, fn) {
     _valueTest(flip) {
       if (Object.keys(this.data).length === 0) {
         throw new Error(
-          "Unable to search for a minimum or maximum value on an empty NumberDict",
+          'Unable to search for a minimum or maximum value on an empty NumberDict'
         );
       } else if (Object.keys(this.data).length === 1) {
         return this.data[Object.keys(this.data)[0]];
@@ -399,7 +403,7 @@ function addData(p5, fn) {
 
     _keyTest(flip) {
       if (Object.keys(this.data).length === 0) {
-        throw new Error("Unable to use minValue on an empty NumberDict");
+        throw new Error('Unable to use minValue on an empty NumberDict');
       } else if (Object.keys(this.data).length === 1) {
         return Object.keys(this.data)[0];
       } else {
