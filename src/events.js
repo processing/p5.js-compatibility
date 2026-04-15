@@ -67,33 +67,6 @@ function addEvents(p5, fn) {
     }
     return false;
   };
-
-  fn.touchStarted = function (...args) {
-    return this.mousePressed(...args);
-  };
-  fn.touchEnded = function (...args) {
-    return this.mouseReleased(...args);
-  };
-  fn.touchMoved = function (...args) {
-    return this.mouseDragged(...args);
-  };
-
-  p5.Element.prototype.touchStarted = function (cb) {
-    return this.mousePressed(cb);
-  };
-  p5.Element.prototype.touchEnded = function (cb) {
-    return this.mouseReleased(cb);
-  };
-  p5.Element.prototype.touchMoved = function (cb) {
-    if (cb === false) {
-      return this.mouseMoved(false);
-    }
-    return this.mouseMoved(function (event) {
-      if ((event.buttons & 1) !== 0) {
-        return cb(event);
-      }
-    });
-  };
 }
 
 if (typeof p5 !== undefined) {
