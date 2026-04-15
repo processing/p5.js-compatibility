@@ -557,7 +557,7 @@ function draw() {
 
 Notice that when you press multiple buttons at the same time, multiple shapes can be obtained.
 
-Finally, touch and mouse event handling has been combined to improve sketch consistency across devices. In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global [`touches`](https://beta.p5js.org/reference/p5/touches/) array to see what pointers are active for multitouch support! The legacy touch event aliases remain available with the [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js) compatibility add-on library.
+Finally, touch and mouse event handling has been combined to improve sketch consistency across devices. In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global [`touches`](https://beta.p5js.org/reference/p5/touches/) array to see what pointers are active for multitouch support!
 
 <table>
 <tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
