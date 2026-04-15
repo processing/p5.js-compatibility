@@ -73,6 +73,6 @@ function addEvents(p5, fn) {
   };
 }
 
-if (typeof p5 !== undefined) {
+if (typeof p5 !== 'undefined' && typeof p5.registerAddon === 'function') {
   p5.registerAddon(addEvents);
 }
