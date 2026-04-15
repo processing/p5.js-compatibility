@@ -1,6 +1,6 @@
-# 2.0 is 🌻 live 🌻
+# p5.js v2 is 🌻 live 🌻
 
-* The [full p5.js 2.0 reference is here](https://beta.p5js.org/)
+* The [full p5.js 2.0+ reference is here](https://beta.p5js.org/)
 * Interested in contributing? Check for [ready for work](https://github.com/orgs/processing/projects/21/views/8) issues!
 
 # p5.js-compatibility
