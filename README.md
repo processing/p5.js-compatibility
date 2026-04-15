@@ -7,13 +7,15 @@
 
 Even as p5.js 2.0 becomes more stable, p5.js 1.x will continue to be supported until August, 2026. Between 1.x and 2.0, there are many additions, and some breaking changes. In addition to making p5.js 2.0 available as a library, we are working on preparing several compatibility add-on libraries that would make it possible to keep using 1.x features that are no longer part of 2.0.
 
-We are working on three compatibility add-on libraries which will make these 1.x features available for 2.0:
+We are working on four compatibility add-on libraries which will make these 1.x features available for 2.0:
 
 1. [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js)
 
 2. [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js)
 
-3. [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js)
+3. [events.js](https://github.com/processing/p5.js-compatibility/blob/main/src/events.js)
+
+4. [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js)
 
 These add-on libraries are available in the **p5.js Editor** in the Settings > Library Management modal:
 
@@ -593,7 +595,7 @@ function draw() {
 </table>
 
 
-## ...using keyCode events:
+## ...using keyCode events (`events.js`):
 
 The sketch below works in both versions, but try to use it while quickly pressing different arrow keys - you will notice that the event handling in p5.js 2.x is smoother:
 
