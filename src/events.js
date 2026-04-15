@@ -40,7 +40,9 @@ function addEvents(p5, fn) {
   fn._onkeydown = function (e) {
     const numericCode = e.keyCode || codeToKeyCode[e.code] || 0;
     this.keyCode = numericCode;
-    pressedKeyCodes.add(numericCode);
+    if (numericCode !== 0) {
+      pressedKeyCodes.add(numericCode);
+    }
 
     if (typeof oldOnKeyDown === 'function') {
       oldOnKeyDown.call(this, e);
@@ -50,7 +52,9 @@ function addEvents(p5, fn) {
   fn._onkeyup = function (e) {
     const numericCode = e.keyCode || codeToKeyCode[e.code] || 0;
     this.keyCode = numericCode;
-    pressedKeyCodes.delete(numericCode);
+    if (numericCode !== 0) {
+      pressedKeyCodes.delete(numericCode);
+    }
 
     if (typeof oldOnKeyUp === 'function') {
       oldOnKeyUp.call(this, e);
