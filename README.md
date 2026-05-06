@@ -32,6 +32,7 @@ These changes affect authoring of p5.js sketches. Read on for more information o
 7. Affecting only add-on libraries:  read below how `registerPreloadMethod` can support both preload (1.x) and promises (2.x)
 8. Use JavaScript versions of the following functions, which have been removed in 2.x: `createStringDict()`, `createNumberDict()`, `p5.TypedDict`, `p5.NumberDict`, `append()`, `arrayCopy()`, `concat()`, `reverse()`, `shorten()`, `sort()`, `splice()`, `subset()`  _(to revert to 1.x use, include [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js))_
 9. In 1.x, `createVector()` was a shortcut for `createVector(0, 0, 0)`. In 2.x, p5.js has vectors of any dimension, so you must provide your desired number of zeros. `Use createVector(0, 0)` for a 2D vector and `createVector(0, 0, 0)` for a 3D vector - this will work in all versions.
+10. In 2.x, fontSize is not passed as a parameter to `textToPoints()` anymore. Any sketches from 1.x using `textToPoints()` will need to set `textSize()` before `textToPoints()` is called. Additionally, 2.x supports loading fonts with `async/await` instead of `preload()`.
 
 # How to update p5.js code from 1.x to 2.0
 
@@ -723,3 +724,62 @@ if (code === 'KeyA') {
 ```
 
 Both numeric and string key codes can be found at [keycode.info](https://www.toptal.com/developers/keycode).
+
+## ...turning a string into an array of points (`textToPoints()`)
+
+In 1.x, `textToPoints(str, x, y, [fontSize], [options])` took in a `fontSize` parameter. 2.x no longer does, so the corrected form is now `textToPoints(str, x, y, [options])`. To set the font size, `textSize()` needs to be defined before `textToPoints()` is called. Fonts can be loaded in with `async/await` instead of `preload()`.
+
+<table>
+<tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
+<tr><td>
+
+```js
+let font;
+
+function preload() {
+  font = loadFont('/assets/inconsolata.otf');
+}
+
+function setup() {
+  createCanvas(100, 100);
+
+  background(200);
+
+  // Get the point array.
+  let points = font.textToPoints('susan', 6, 60, 35, { sampleFactor:  0.5 });
+
+  // Draw a dot at each point.
+  for (let p of points) {
+    point(p.x, p.y);
+  }
+
+  describe('A set of black dots outlining the text "p5*js" on a gray background.');
+}
+```
+
+</td><td>
+
+```js
+let font;
+
+async function setup() {
+  createCanvas(100, 100);
+  font = await loadFont('/assets/inconsolata.otf');
+
+  background(200);
+  textSize(35);
+
+  // Get the point array.
+  let points = font.textToPoints('p5*js', 6, 60, { sampleFactor: 0.5 });
+
+  // Draw a dot at each point.
+  for (let p of points) {
+    point(p.x, p.y);
+  }
+
+  describe('A set of black dots outlining the text "p5*js" on a gray background.');
+}
+```
+
+</td></tr>
+</table>
