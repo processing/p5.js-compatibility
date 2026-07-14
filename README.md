@@ -19,7 +19,7 @@ These add-on libraries are available in the **p5.js Editor** in the Settings > L
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/eb074d21-841a-4649-825c-eb95f7c3c488" alt="Screenshot of the Settings model in p5.js Editor showing hte Library Management tab" />
 
-# List of changes
+# List of changes in p5.js API
 
 These changes affect authoring of p5.js sketches. Read on for more information on how to transition, or how to use relevant compatibility addons.
 
