@@ -1,7 +1,8 @@
 # p5.js v2 is 🌻 live 🌻
 
-* The [full p5.js 2.0+ reference is here](https://beta.p5js.org/)
-* Interested in contributing? Check for [ready for work](https://github.com/orgs/processing/projects/21/views/8) issues!
+🆕 **Teachers' Guide to p5.js v2:** [p5.js v2 Transition Guide for Middle School and High School Educators](https://beta.p5js.org/tutorials/v2_transition/)
+
+<img width="400" alt="Animated summary of the main code changed between v1 and v2" src="https://github.com/user-attachments/assets/073c593b-a0db-48db-bcdf-434716c16112" />
 
 # p5.js-compatibility
 
