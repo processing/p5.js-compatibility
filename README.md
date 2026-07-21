@@ -1,6 +1,6 @@
 # p5.js v2 is 🌻 live 🌻
 
-🆕 **Teachers' Guide to p5.js v2:** [p5.js v2 Transition Guide for Middle School and High School Educators](https://beta.p5js.org/tutorials/v2_transition/)
+🆕 **Teachers' Guide to p5.js v2:** [p5.js v2 Transition Guide for Middle School and High School Educators](https://p5js.org/tutorials/v2_transition/)
 
 <img width="400" alt="Animated summary of the main code changed between v1 and v2" src="https://github.com/user-attachments/assets/073c593b-a0db-48db-bcdf-434716c16112" />
 
@@ -417,7 +417,7 @@ All of the above usages in p5.js 1.x remain available with the [shapes.js](https
 
 ## ...using `fontWidth()`
 
-In p5.js 2.x, there are two ways to measure text: [fontWidth(...)](https://beta.p5js.org/reference/p5/fontwidth/) and [textWidth(...)](https://beta.p5js.org/reference/p5/textwidth/). In 2.x, `textWidth()` calculates the text's tight bounding box, which is what p5.js 1.x `fontWidth()` does. In other words:
+In p5.js 2.x, there are two ways to measure text: [fontWidth(...)](https://p5js.org/reference/p5/fontwidth/) and [textWidth(...)](https://p5js.org/reference/p5/textwidth/). In 2.x, `textWidth()` calculates the text's tight bounding box, which is what p5.js 1.x `fontWidth()` does. In other words:
 
 <table>
 <tr><th>
@@ -556,7 +556,7 @@ function draw() {
 
 Notice that when you press multiple buttons at the same time, multiple shapes can be obtained.
 
-Finally, touch and mouse event handling has been combined to improve sketch consistency across devices. In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global [`touches`](https://beta.p5js.org/reference/p5/touches/) array to see what pointers are active for multitouch support!
+Finally, touch and mouse event handling has been combined to improve sketch consistency across devices. In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global [`touches`](https://p5js.org/reference/p5/touches/) array to see what pointers are active for multitouch support!
 
 <table>
 <tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
