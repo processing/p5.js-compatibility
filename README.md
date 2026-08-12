@@ -33,6 +33,7 @@ These changes affect authoring of p5.js sketches. Read on for more information o
 7. Affecting only add-on libraries:  read below how `registerPreloadMethod` can support both preload (1.x) and promises (2.x)
 8. Use JavaScript versions of the following functions, which have been removed in 2.x: `createStringDict()`, `createNumberDict()`, `p5.TypedDict`, `p5.NumberDict`, `append()`, `arrayCopy()`, `concat()`, `reverse()`, `shorten()`, `sort()`, `splice()`, `subset()`  _(to revert to 1.x use, include [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js))_
 9. In 1.x, `createVector()` was a shortcut for `createVector(0, 0, 0)`. In 2.x, p5.js has vectors of any dimension, so you must provide your desired number of zeros. `Use createVector(0, 0)` for a 2D vector and `createVector(0, 0, 0)` for a 3D vector - this will work in all versions.
+10. In 1.x, custom shaders would apply to different things (such as fills and strokes) based on what uniforms are present in the shader and what the current p5 state is (for example, a shader that does not read any p5 lighting state would be silently turned off if you draw a sphere with `lights()` applied.) In 2.x, `shader(yourShader)` will always apply your shader to fills, and the new [`strokeShader`](https://p5js.org/reference/p5/strokeShader/) and [`imageShader`](https://p5js.org/reference/p5/imageShader/) functions can be used to apply a separate shader to strokes and `image()` calls.
 
 # How to update p5.js code from 1.x to 2.0
 
@@ -724,3 +725,40 @@ if (code === 'KeyA') {
 ```
 
 Both numeric and string key codes can be found at [keycode.info](https://www.toptal.com/developers/keycode).
+
+## ...custom shaders
+
+In most cases, nothing needs to change! However, if your sketch relied on p5 automatically turning off a shader, you may need to manually scope your shader between a `push` and `pop`.
+
+For example, if you had a shader that did not use p5's lighting system, in 1.x, it would stop applying once you turn on lighting:
+```js
+shader(myShaderWithoutLighting);
+sphere(100); // Draws with your shader
+
+translate(100, 0);
+lights();
+sphere(100); // Draws without your shader
+```
+
+In 2.x, you would need to manually contain the shader to the first shape:
+```js
+push();
+shader(myShaderWithoutLighting);
+sphere(100);
+pop(); // Resets the shader
+
+translate(100, 0);
+lights();
+sphere(100);
+```
+
+Alternatively, you can use `resetShader`:
+```js
+shader(myShaderWithoutLighting);
+sphere(100);
+resetShader(); // Resets the shader
+
+translate(100, 0);
+lights();
+sphere(100);
+```
