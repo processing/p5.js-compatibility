@@ -23,6 +23,7 @@ These add-on libraries are available in the **p5.js Editor** in the Settings > L
 
 These changes affect authoring of p5.js sketches. Read on for more information on how to transition, or how to use relevant compatibility addons.
 
+1. There's a new version of p5.sound.js, the old version that used to work with p5 v1 will not work with v2, the new version will work with both versions (v1, v2). For a list of changes in v2, skip to the p5.sound.js section.
 1. Instead of `bezierVertex(x1, y1, x2, y2, x3, y3)` and `quadraticVertex(x1, y1, x2, y2)`, use multiple `bezierVertex(x, y)` calls, and set order with `bezierOrder` _(to revert to 1.x use, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js))_
 2.  Instead of `curveVertex`, use `splineVertex` - and expect `endShape(CLOSE)` to create a smoothly connected shape  _(for 1.x usage, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js))_
 3. The previous usage of of `textWidth(..)` is now covered by `fontWidth(..)` in 2.x. Use `textWidth(..)` to measure text *without* space (tight bounding box). In 2.x, `fontWidth(..)` measures text width including trailing space.
@@ -723,3 +724,97 @@ if (code === 'KeyA') {
 ```
 
 Both numeric and string key codes can be found at [keycode.info](https://www.toptal.com/developers/keycode).
+
+## p5.sound.js Compatibility
+The new p5.sound.js includes some breaking changes. Many of these changes include the removal of classes that we deemed redundant when considering the existence of [Tone.js](https://tonejs.github.io/). You can read more about this decision here: [Announcing the New p5.sound.js Library](https://medium.com/processing-foundation/announcing-the-new-p5-sound-js-library-42efc154bed0). If you want to use any of the deprecated classes or features, you may find the original p5.sound library in the editor and the original reference docs here: [https://v1.p5js.org/reference/p5.sound/](https://v1.p5js.org/reference/p5.sound/)
+
+## Examples
+A collection of examples using the 2.0 library can be found in the following places.
+  1. p5 Website examples:  [https://p5js.org/examples/](https://p5js.org/examples/)
+  2. Simple Melody example: [https://p5js.org/tutorials/simple-melody-tutorial](https://p5js.org/tutorials/simple-melody-tutorial)
+  3. In the reference documentation for individial p5.sound classes and methods here: [https://p5js.org/reference/p5.sound/](https://p5js.org/reference/p5.sound/)
+  4. In the [/examples](https://github.com/processing/p5.sound.js/tree/main/examples) folder of the p5.sound.js GitHub repository.
+
+## List of changes in p5.sound.js API
+Most things are the same between p5.sound.js 1.x and 2.0, but there are some big differences: For starters, p5.sound.js 2.0 has fewer classes than the original library. There is also a more streamlined API (fewer redundancies, etc...). If you need access to some of the deprecated classes such as `p5.MonoSynth()` for example, use [Tone.js](https://tonejs.github.io/). For more information on these changes read the announcement for the new p5.sound.js library [here](https://medium.com/processing-foundation/announcing-the-new-p5-sound-js-library-42efc154bed0).
+
+
+
+## ...loading sounds with loadSound
+One of the biggest changes in the new p5.sound.js library is how we handle loading sound files. Instead of loading a sound file in the `preload()` function, the `loadSound(...)` function returns a **promise** in an `async/await` in `setup()` (or with callbacks)  _(to revert to 1.x use, include [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js))_
+
+For example:
+
+```js
+let sound;
+
+async function setup() {
+  sound = await loadSound('path/to/soundFile');
+  
+  createCanvas(100, 100);
+  describe(
+    'A gray square with text that reads "click to play the sound".');
+  textWrap(WORD)
+  textAlign(CENTER)
+}
+
+function draw() {
+  background(200);
+  text('click to play the sound', 0, 20, width);
+}
+
+function mousePressed() {
+  sound.play();
+}
+```
+
+## Deprecated class
+When using a deprecated class such as `MonoSynth, EQ, Convolver, Distortion, OnsetDetect, Filter, Effect, Compressor, AudioVoice, Part, Phrase, PolySynth, Pulse, Score, SoundLoop` you will see an alert that tells you that the class 'is deprecated' and to 'Try using the equivalent Tone.js class'.
+
+To combine p5.sound.js and Tone.js nodes, you will have to pass the p5.sound.js `AudioContext` to Tone.js. You can do this like so:
+
+```html
+<!-- include Tone.js after the p5.sound.js library-->
+ <script src="p5.sound.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/tone@15.0.2/build/Tone.js"></script>
+
+```
+
+```js
+let sound_location = 0
+let panner, synthy
+
+function setup() {
+  createCanvas(400, 400)
+
+  // Tone.js is loaded from its own script tag. Hand it p5.sound's audio
+  // context before making any Tone.js object, and the two libraries build on
+  // one context, so their nodes can be connected to each other.
+  Tone.setContext(getAudioContext())
+
+  synthy = new Tone.MonoSynth()
+  panner = new p5.Panner()
+
+  // connect a Tone.js audio node to a p5 sound effect
+  panner.setInput(synthy)
+
+  describe('A grey sketch that plays a Tone.js synth through a p5.sound panner. Click to play a note at a random stereo position.')
+}
+
+function draw() {
+  background(220)
+  text("sound is here", ((sound_location + 1) * 0.5 ) * width, height/2)
+}
+
+function mousePressed() {
+  sound_location = random(-1,1)
+  panner.pan(sound_location)
+  synthy.triggerAttackRelease("D#5", (1.5))
+}
+
+```
+
+## List of Breaking Changes
+Here is a link to a spreadsheet that lists the deprecated clases and methods.
+
+https://docs.google.com/spreadsheets/d/1pL0EVOlRTtfc6kcmK2rd9tZXpZal8FkJKALPb7app28/edit?gid=0#gid=0
