@@ -1,7 +1,8 @@
 # p5.js v2 is 🌻 live 🌻
 
-* The [full p5.js 2.0+ reference is here](https://beta.p5js.org/)
-* Interested in contributing? Check for [ready for work](https://github.com/orgs/processing/projects/21/views/8) issues!
+🆕 **Teachers' Guide to p5.js v2:** [p5.js v2 Transition Guide for Middle School and High School Educators](https://p5js.org/tutorials/v2_transition/)
+
+<img width="400" alt="Animated summary of the main code changed between v1 and v2" src="https://github.com/user-attachments/assets/073c593b-a0db-48db-bcdf-434716c16112" />
 
 # p5.js-compatibility
 
@@ -33,6 +34,7 @@ These changes affect authoring of p5.js sketches. Read on for more information o
 7. Affecting only add-on libraries:  read below how `registerPreloadMethod` can support both preload (1.x) and promises (2.x)
 8. Use JavaScript versions of the following functions, which have been removed in 2.x: `createStringDict()`, `createNumberDict()`, `p5.TypedDict`, `p5.NumberDict`, `append()`, `arrayCopy()`, `concat()`, `reverse()`, `shorten()`, `sort()`, `splice()`, `subset()`  _(to revert to 1.x use, include [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js))_
 9. In 1.x, `createVector()` was a shortcut for `createVector(0, 0, 0)`. In 2.x, p5.js has vectors of any dimension, so you must provide your desired number of zeros. `Use createVector(0, 0)` for a 2D vector and `createVector(0, 0, 0)` for a 3D vector - this will work in all versions.
+10. In 1.x, custom shaders would apply to different things (such as fills and strokes) based on what uniforms are present in the shader and what the current p5 state is (for example, a shader that does not read any p5 lighting state would be silently turned off if you draw a sphere with `lights()` applied.) In 2.x, `shader(yourShader)` will always apply your shader to fills, and the new [`strokeShader`](https://p5js.org/reference/p5/strokeShader/) and [`imageShader`](https://p5js.org/reference/p5/imageShader/) functions can be used to apply a separate shader to strokes and `image()` calls.
 
 # How to update p5.js code from 1.x to 2.0
 
@@ -417,7 +419,7 @@ All of the above usages in p5.js 1.x remain available with the [shapes.js](https
 
 ## ...using `fontWidth()`
 
-In p5.js 2.x, there are two ways to measure text: [fontWidth(...)](https://beta.p5js.org/reference/p5/fontwidth/) and [textWidth(...)](https://beta.p5js.org/reference/p5/textwidth/). In 2.x, `textWidth()` calculates the text's tight bounding box, which is what p5.js 1.x `fontWidth()` does. In other words:
+In p5.js 2.x, there are two ways to measure text: [fontWidth(...)](https://p5js.org/reference/p5/fontwidth/) and [textWidth(...)](https://p5js.org/reference/p5/textwidth/). In 2.x, `textWidth()` calculates the text's tight bounding box, which is what p5.js 1.x `fontWidth()` does. In other words:
 
 <table>
 <tr><th>
@@ -556,7 +558,7 @@ function draw() {
 
 Notice that when you press multiple buttons at the same time, multiple shapes can be obtained.
 
-Finally, touch and mouse event handling has been combined to improve sketch consistency across devices. In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global [`touches`](https://beta.p5js.org/reference/p5/touches/) array to see what pointers are active for multitouch support!
+Finally, touch and mouse event handling has been combined to improve sketch consistency across devices. In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global [`touches`](https://p5js.org/reference/p5/touches/) array to see what pointers are active for multitouch support!
 
 <table>
 <tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
@@ -728,19 +730,19 @@ Both numeric and string key codes can be found at [keycode.info](https://www.top
 ## p5.sound.js Compatibility
 The new p5.sound.js includes some breaking changes. Many of these changes include the removal of classes that we deemed redundant when considering the existence of [Tone.js](https://tonejs.github.io/). You can read more about this decision here: [Announcing the New p5.sound.js Library](https://medium.com/processing-foundation/announcing-the-new-p5-sound-js-library-42efc154bed0). If you want to use any of the deprecated classes or features, you may find the original p5.sound library in the editor and the original reference docs here: [https://v1.p5js.org/reference/p5.sound/](https://v1.p5js.org/reference/p5.sound/)
 
-## Examples
+### Examples
 A collection of examples using the 2.0 library can be found in the following places.
   1. p5 Website examples:  [https://p5js.org/examples/](https://p5js.org/examples/)
   2. Simple Melody example: [https://p5js.org/tutorials/simple-melody-tutorial](https://p5js.org/tutorials/simple-melody-tutorial)
   3. In the reference documentation for individial p5.sound classes and methods here: [https://p5js.org/reference/p5.sound/](https://p5js.org/reference/p5.sound/)
   4. In the [/examples](https://github.com/processing/p5.sound.js/tree/main/examples) folder of the p5.sound.js GitHub repository.
 
-## List of changes in p5.sound.js API
+### List of changes in p5.sound.js API
 Most things are the same between p5.sound.js 1.x and 2.0, but there are some big differences: For starters, p5.sound.js 2.0 has fewer classes than the original library. There is also a more streamlined API (fewer redundancies, etc...). If you need access to some of the deprecated classes such as `p5.MonoSynth()` for example, use [Tone.js](https://tonejs.github.io/). For more information on these changes read the announcement for the new p5.sound.js library [here](https://medium.com/processing-foundation/announcing-the-new-p5-sound-js-library-42efc154bed0).
 
 
 
-## ...loading sounds with loadSound
+### ...loading sounds with loadSound
 One of the biggest changes in the new p5.sound.js library is how we handle loading sound files. Instead of loading a sound file in the `preload()` function, the `loadSound(...)` function returns a **promise** in an `async/await` in `setup()` (or with callbacks)  _(to revert to 1.x use, include [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js))_
 
 For example:
@@ -768,7 +770,7 @@ function mousePressed() {
 }
 ```
 
-## Deprecated class
+### Deprecated Classes
 When using a deprecated class such as `MonoSynth, EQ, Convolver, Distortion, OnsetDetect, Filter, Effect, Compressor, AudioVoice, Part, Phrase, PolySynth, Pulse, Score, SoundLoop` you will see an alert that tells you that the class 'is deprecated' and to 'Try using the equivalent Tone.js class'.
 
 To combine p5.sound.js and Tone.js nodes, you will have to pass the p5.sound.js `AudioContext` to Tone.js. You can do this like so:
@@ -814,7 +816,44 @@ function mousePressed() {
 
 ```
 
-## List of Breaking Changes
-Here is a link to a spreadsheet that lists the deprecated clases and methods.
+### List of Breaking Changes
+Here is the spreadsheet that lists the deprecated clases and methods.
 
-https://docs.google.com/spreadsheets/d/1pL0EVOlRTtfc6kcmK2rd9tZXpZal8FkJKALPb7app28/edit?gid=0#gid=0
+[List of Changes](https://docs.google.com/spreadsheets/d/1pL0EVOlRTtfc6kcmK2rd9tZXpZal8FkJKALPb7app28/edit?gid=0#gid=0)
+
+## ...custom shaders
+
+In most cases, nothing needs to change! However, if your sketch relied on p5 automatically turning off a shader, you may need to manually scope your shader between a `push` and `pop`.
+
+For example, if you had a shader that did not use p5's lighting system, in 1.x, it would stop applying once you turn on lighting:
+```js
+shader(myShaderWithoutLighting);
+sphere(100); // Draws with your shader
+
+translate(100, 0);
+lights();
+sphere(100); // Draws without your shader
+```
+
+In 2.x, you would need to manually contain the shader to the first shape:
+```js
+push();
+shader(myShaderWithoutLighting);
+sphere(100);
+pop(); // Resets the shader
+
+translate(100, 0);
+lights();
+sphere(100);
+```
+
+Alternatively, you can use `resetShader`:
+```js
+shader(myShaderWithoutLighting);
+sphere(100);
+resetShader(); // Resets the shader
+
+translate(100, 0);
+lights();
+sphere(100);
+```
