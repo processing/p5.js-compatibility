@@ -6,7 +6,7 @@
 
 # p5.js-compatibility
 
-The p5.js v2 library is now the default version on our website and in the editor. Although p5.js v1 remains available (reference at [v1.p5js.org/][https://v1.p5js.org/]), it will not be maintained.
+The p5.js v2 library is now the default version on our website and in the editor. Although p5.js v1 remains available (reference at [v1.p5js.org/](https://v1.p5js.org/)), it will not be maintained.
 
 Between v1 and v2, there are many additions, and some breaking changes. Most sketches work in v2 directly. When sketches do not work, you can either update them (read [p5.js v2 Transition Guide for Middle School and High School Educators](https://p5js.org/tutorials/v2_transition/) for most common updates, or the rest of this README for the full list), or use one of the compatibility add-on libraries. These libraries make v1 features available in v2.
 
