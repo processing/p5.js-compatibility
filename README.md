@@ -1,13 +1,14 @@
 # p5.js v2 is 🌻 live 🌻
 
-* The [full p5.js 2.0+ reference is here](https://beta.p5js.org/)
-* Interested in contributing? Check for [ready for work](https://github.com/orgs/processing/projects/21/views/8) issues!
+🆕 **Teachers' Guide to p5.js v2:** [p5.js v2 Transition Guide for Middle School and High School Educators](https://p5js.org/tutorials/v2_transition/)
+
+<img width="400" alt="Animated summary of the main code changed between v1 and v2" src="https://github.com/user-attachments/assets/073c593b-a0db-48db-bcdf-434716c16112" />
 
 # p5.js-compatibility
 
-Even as p5.js 2.0 becomes more stable, p5.js 1.x will continue to be supported until August, 2026. Between 1.x and 2.0, there are many additions, and some breaking changes. In addition to making p5.js 2.0 available as a library, we are working on preparing several compatibility add-on libraries that would make it possible to keep using 1.x features that are no longer part of 2.0.
+The p5.js v2 library is now the default version on our website and in the editor. Although p5.js v1 remains available (reference at [v1.p5js.org/][https://v1.p5js.org/]), it will not be maintained.
 
-We are working on three compatibility add-on libraries which will make these 1.x features available for 2.0:
+Between v1 and v2, there are many additions, and some breaking changes. Most sketches work in v2 directly. When sketches do not work, you can either update them (read [p5.js v2 Transition Guide for Middle School and High School Educators](https://p5js.org/tutorials/v2_transition/) for most common updates, or the rest of this README for the full list), or use one of the compatibility add-on libraries. These libraries make v1 features available in v2.
 
 1. [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js)
 
@@ -19,52 +20,29 @@ These add-on libraries are available in the **p5.js Editor** in the Settings > L
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/eb074d21-841a-4649-825c-eb95f7c3c488" alt="Screenshot of the Settings model in p5.js Editor showing hte Library Management tab" />
 
-# List of changes
+# List of changes in p5.js API
 
 These changes affect authoring of p5.js sketches. Read on for more information on how to transition, or how to use relevant compatibility addons.
 
-1. Instead of `bezierVertex(x1, y1, x2, y2, x3, y3)` and `quadraticVertex(x1, y1, x2, y2)`, use multiple `bezierVertex(x, y)` calls, and set order with `bezierOrder` _(to revert to 1.x use, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js))_
-2.  Instead of `curveVertex`, use `splineVertex` - and expect `endShape(CLOSE)` to create a smoothly connected shape  _(for 1.x usage, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js))_
-3. The previous usage of of `textWidth(..)` is now covered by `fontWidth(..)` in 2.x. Use `textWidth(..)` to measure text *without* space (tight bounding box). In 2.x, `fontWidth(..)` measures text width including trailing space.
-4. Instead of `keyCode === UP_ARROW` (and similar), use `keyIsDown(UP_ARROW)` (works in both versions) or `code === UP_ARROW` (works in 2.x). _(to revert to 1.x use, include [events.js](https://github.com/processing/p5.js-compatibility/blob/main/src/events.js))_
-5. Instead of `mouseButton === RIGHT` (and similar), use `mouseButton.right`
-6. Instead of `preload()`, `loadImage(...)`, `loadJSON(...)` and all other `load...` functions return **promises** can be used with `async/await` in `setup()` (or with callbacks)  _(to revert to 1.x use, include [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js))_
-7. Affecting only add-on libraries:  read below how `registerPreloadMethod` can support both preload (1.x) and promises (2.x)
-8. Use JavaScript versions of the following functions, which have been removed in 2.x: `createStringDict()`, `createNumberDict()`, `p5.TypedDict`, `p5.NumberDict`, `append()`, `arrayCopy()`, `concat()`, `reverse()`, `shorten()`, `sort()`, `splice()`, `subset()`  _(to revert to 1.x use, include [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js))_
-9. In 1.x, `createVector()` was a shortcut for `createVector(0, 0, 0)`. In 2.x, p5.js has vectors of any dimension, so you must provide your desired number of zeros. `Use createVector(0, 0)` for a 2D vector and `createVector(0, 0, 0)` for a 3D vector - this will work in all versions.
-10. In 2.x, fontSize is not passed as a parameter to `textToPoints()` anymore. Any sketches from 1.x using `textToPoints()` will need to set `textSize()` before `textToPoints()` is called. Additionally, 2.x supports loading fonts with `async/await` instead of `preload()`.
-
-# How to update p5.js code from 1.x to 2.0
-
-Most things are the same between p5.js 1.x and 2.0, but there are some big differences: p5.js 2.0 has new capabilities, and it also no longer supports some aspects of p5.js 1.x.
-
-## Do I have to update my 1.x sketches?
-
-First, you should try to update the version and see if the sketch still runs! In many cases, no actions are needed - just update the version and you’re all set.
-
-However, if the sketch doesn’t run anymore using 2.0, then you can either update it to use 2.0, or keep it using 1.x. If any of this sounds applicable, then follow the guide below to update your sketches:
-
-* If you want to use p5.js 2.0 features, like variable-weight fonts
-* If you need your sketches to work after August, 2026. At that point, 1.x will no longer be supported, and 2.0 will become the default in the p5.js Editor. If you face any challenges in making updates, please consider [joining the discussion](https://github.com/processing/p5.js/issues/7488) and [filing bugs](https://github.com/processing/p5.js/issues) to help make p5.js 2.0 a robust tool for the whole community.
-* If you want to use an add-on library or community library that uses p5.js 2.0 features
-* If you want to be able to better integrate with other tools and libraries in the JavaScript ecosystem
-
-## How can I update my 1.x sketches?
-
-Step 1: Switch to 2.0 by using one of the [beta releases](https://github.com/processing/p5.js/releases/) when you import the core library! An [option to switch to 2.0 will be available in the p.js Editor](https://github.com/processing/p5.js-web-editor/pull/3334) once the new release is live!
-
-Step 2: Try running your sketch! In many cases, this will work right away, and no other changes would be needed.
-
-Step 3: If your 1.x sketch does not run with p5.js 2.0, you have two options:
-
-* Update your code to match 2.0
-* or include a compatibility add-on library (also possible in the p5.js Editor once the new release is live.)
+1. There's a [new version of `p5.sound.js`](https://github.com/processing/p5.sound.js). This new sound will work with all versions of p5.js (v1 and v2). The old p5.sound.js library, bundled with v1, will _not work with v2_. For a list of changes in the new p5.sound.js, [skip to the p5.sound.js section](https://github.com/processing/p5.js-compatibility#p5soundjs-compatibility)
+2. Instead of `bezierVertex(x1, y1, x2, y2, x3, y3)` and `quadraticVertex(x1, y1, x2, y2)`, use multiple `bezierVertex(x, y)` calls, and set order with `bezierOrder` _(to revert to 1.x use, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js))_
+3.  Instead of `curveVertex`, use `splineVertex` - and expect `endShape(CLOSE)` to create a smoothly connected shape  _(for 1.x usage, include [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js))_
+4. The previous usage of of `textWidth(..)` is now covered by `fontWidth(..)` in 2.x. Use `textWidth(..)` to measure text *without* space (tight bounding box). In 2.x, `fontWidth(..)` measures text width including trailing space.
+5. Instead of `keyCode === UP_ARROW` (and similar), use `keyIsDown(UP_ARROW)` (works in both versions) or `code === UP_ARROW` (works in 2.x). _(to revert to 1.x use, include [events.js](https://github.com/processing/p5.js-compatibility/blob/main/src/events.js))_
+6. Instead of `mouseButton === RIGHT` (and similar), use `mouseButton.right`
+7. Instead of `preload()`, `loadImage(...)`, `loadJSON(...)` and all other `load...` functions return **promises** can be used with `async/await` in `setup()` (or with callbacks)  _(to revert to 1.x use, include [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js))_
+8. Affecting only add-on libraries:  read below how `registerPreloadMethod` can support both preload (1.x) and promises (2.x)
+9. Use JavaScript versions of the following functions, which have been removed in 2.x: `createStringDict()`, `createNumberDict()`, `p5.TypedDict`, `p5.NumberDict`, `append()`, `arrayCopy()`, `concat()`, `reverse()`, `shorten()`, `sort()`, `splice()`, `subset()`  _(to revert to 1.x use, include [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js))_
+10. In 1.x, `createVector()` was a shortcut for `createVector(0, 0, 0)`. In 2.x, p5.js has vectors of any dimension, so you must provide your desired number of zeros. `Use createVector(0, 0)` for a 2D vector and `createVector(0, 0, 0)` for a 3D vector - this will work in all versions.
+11. In 1.x, custom shaders would apply to different things (such as fills and strokes) based on what uniforms are present in the shader and what the current p5 state is (for example, a shader that does not read any p5 lighting state would be silently turned off if you draw a sphere with `lights()` applied.) In 2.x, `shader(yourShader)` will always apply your shader to fills, and the new [`strokeShader`](https://p5js.org/reference/p5/strokeShader/) and [`imageShader`](https://p5js.org/reference/p5/imageShader/) functions can be used to apply a separate shader to strokes and `image()` calls.
+12. In 2.x, fontSize is not passed as a parameter to `textToPoints()` anymore. Any sketches from 1.x using `textToPoints()` will need to set `textSize()` before `textToPoints()` is called. Additionally, 2.x supports loading fonts with `async/await` instead of `preload()`.
 
 # Changes to make if your sketch includes...
 
 ## ...loading images, sound, fonts, and other assets (`preload.js`)
 
-One of the biggest changes in 2.0 is involves how you can include other files, media, and assets. The p5.js 1.x style of using `preload()` does not reflect anymore how assets are loaded on the web, so p5.js 2.0 uses JavaScript’s async/await keywords to support asynchronicity.
+<details>
+  <summary>One of the biggest changes in 2.0 is involves how you can include other files, media, and assets. The p5.js 1.x style of using `preload()` does not reflect anymore how assets are loaded on the web, so p5.js 2.0 uses JavaScript’s async/await keywords to support asynchronicity.</summary>
 
 If you’re interested in the history of async [read on here](https://dev.to/limzykenneth/asynchronous-p5js-20-458f)!
 
@@ -128,9 +106,14 @@ Laslty, some loader functions have been updated:
 * The [p5.js 2.0 loadBytes](https://betap5js.org/reference/p5/loadBytes/) returns the `UInt8Array` directly
 
 All of the above usages in p5.js 1.x remain available with the [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js) compatibility add-on library.
+</details>
 
 ## ...using registerPreloadMethod in an add-on libraries
 
+
+<details>
+  <summary>Important notes for developers of p5.js add-on libraries who want to support both p5.js v1 and p5.js v2</summary>
+    
 Under the hood, returns a **Promise** from each loadImage, loadSound, and similar functions. Promises are widely used in JavaScript, so it is possible to use a callback in p5.js 1.x to create a Promise, but p5.js 1.x doesn't expect promises to be used, so you have to ensure yourself that, for example, your draw function doesn't start running before loading is done. For an example of a Promise using a callback, check out the example below that makes p5.sound.js compatible with both 1.x and 2.0:
 
 If your add-on library built with p5.js 1.x uses `registerPreloadMethod` such as in this example from [p5.sound.js](https://github.com/processing/p5.sound.js):
@@ -178,9 +161,12 @@ function loadSound (path) {
 
 And that's it! You can check this example of making an add-on library backwards-compatible and work with p5.js 2.0 here: [the p5.sound.js example](https://github.com/processing/p5.sound.js/commit/608ffa93f241538c4fb353544f6d01275911d212)
 
+</details>
+
 ## ...making shapes  (`shapes.js`)
 
-If you use `vertex` and `bezierVertex` is the p5.js 1.x code, here's how you can approach updating your code.
+<details>
+  <summary>If you use `vertex` and `bezierVertex` is the p5.js v1 code, here are the changes your code will need.  </summary>
 
 The below code is based on the [custom shapes](https://p5js.org/tutorials/custom-shapes-and-smooth-curves/) tutorial:
 
@@ -414,10 +400,12 @@ function setup() {
 </table>
 
 All of the above usages in p5.js 1.x remain available with the [shapes.js](https://github.com/processing/p5.js-compatibility/blob/main/src/shapes.js) compatibility add-on library.
+</details>
 
 ## ...using `fontWidth()`
 
-In p5.js 2.x, there are two ways to measure text: [fontWidth(...)](https://beta.p5js.org/reference/p5/fontwidth/) and [textWidth(...)](https://beta.p5js.org/reference/p5/textwidth/). In 2.x, `textWidth()` calculates the text's tight bounding box, which is what p5.js 1.x `fontWidth()` does. In other words:
+<details><summary>In p5.js 2.x, there are two ways to measure text: [fontWidth(...)](https://p5js.org/reference/p5/fontwidth/) and [textWidth(...)](https://p5js.org/reference/p5/textwidth/). In 2.x, `textWidth()` calculates the text's tight bounding box, which is what p5.js 1.x `fontWidth()` does.</summary>
+  
 
 <table>
 <tr><th>
@@ -465,10 +453,13 @@ function setup() {
 
 </td></tr>
 </table>
+</details>
 
 ## ...using data structures and functions that have improved alternatives (`data.js`)
 
-One bit change relates to data structures in JavaScript. The following funcitons have been removed in p5.js 2.0. These were originally in p5.js 1.x because, historically, they were also in Processing. However, p5.js is a JavaScript library, and JavaScript objects and key-value maps can be used instead of these functions:
+<details><summary>One big change relates to data structures in JavaScript. The following funcitons have been removed in p5.js v2.</summary>
+  
+  These were originally in p5.js v1 because, historically, they were also in Processing. However, p5.js is a JavaScript library, and JavaScript objects and key-value maps can be used instead of these functions:
 
 * `createStringDict()`
 * `createNumberDict()`
@@ -489,12 +480,11 @@ The below functions are also better supported in JavaScript itself:
 * `subset()`
 
 All of the above usages in p5.js 1.x remain available with the [data.js](https://github.com/processing/p5.js-compatibility/blob/main/src/data.js) compatibility add-on library.
+</details>
 
 ## ...using mouseButton events
 
-In 1.X, where the `mouseButton` was a single variable that could have values `left`, `right` and `center`, we cannot detect if the `left` and `right` button have been pressed together.
-In 2.X, the `mouseButton` is now an object with properties: `left`, `right` and `center`, which are booleans indicating whether each button has been pressed respectively.
-This means that we can now detect if multiple buttons are pressed together (like if the `left` and `right` button are pressed together).
+<details><summary>In v1, where the `mouseButton` was a single variable that could have values `left`, `right` and `center`, we cannot detect if the `left` and `right` button have been pressed together. In v2, the `mouseButton` is now an object with properties: `left`, `right` and `center`, which are booleans indicating whether each button has been pressed respectively. This means that we can now detect if multiple buttons are pressed together (like if the `left` and `right` button are pressed together).</summary>
 
 ```js
 function setup() {
@@ -556,7 +546,7 @@ function draw() {
 
 Notice that when you press multiple buttons at the same time, multiple shapes can be obtained.
 
-Finally, touch and mouse event handling has been combined to improve sketch consistency across devices. In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global [`touches`](https://beta.p5js.org/reference/p5/touches/) array to see what pointers are active for multitouch support!
+Finally, touch and mouse event handling has been combined to improve sketch consistency across devices. In p5.js 2.0, instead of having separate methods for mouse and touch, we now use the browser's pointer API to handle both simultaneously. Try defining mouse functions as usual and accessing the global [`touches`](https://p5js.org/reference/p5/touches/) array to see what pointers are active for multitouch support!
 
 <table>
 <tr><th>p5.js 1.x</th><th>p5.js 2.x</th></tr>
@@ -592,10 +582,10 @@ function draw() {
 
 </td></tr>
 </table>
-
+</details>
 
 ## ...using keyCode events:
-
+<details><summary>We recommend using `keyIsDown(...)` in both v1 and v2</summary>
 The sketch below works in both versions, but try to use it while quickly pressing different arrow keys - you will notice that the event handling in p5.js 2.x is smoother:
 
 ```js
@@ -783,3 +773,140 @@ async function setup() {
 
 </td></tr>
 </table>
+</details>
+
+## p5.sound.js Compatibility
+
+<details><summary>The new p5.sound.js includes some breaking changes. Many of these changes include the removal of classes that we deemed redundant when considering the existence of [Tone.js](https://tonejs.github.io/). You can read more about this decision here: [Announcing the New p5.sound.js Library](https://medium.com/processing-foundation/announcing-the-new-p5-sound-js-library-42efc154bed0).</summary>
+  
+If you want to use any of the deprecated classes or features, you may find the original p5.sound library in the editor (with any of the v1 versions) and the original reference docs here: [https://v1.p5js.org/reference/p5.sound/](https://v1.p5js.org/reference/p5.sound/)
+
+### Examples
+A collection of examples using the 2.0 library can be found in the following places.
+  1. p5 Website examples:  [https://p5js.org/examples/](https://p5js.org/examples/)
+  2. Simple Melody example: [https://p5js.org/tutorials/simple-melody-tutorial](https://p5js.org/tutorials/simple-melody-tutorial)
+  3. In the reference documentation for individial p5.sound classes and methods here: [https://p5js.org/reference/p5.sound/](https://p5js.org/reference/p5.sound/)
+  4. In the [/examples](https://github.com/processing/p5.sound.js/tree/main/examples) folder of the p5.sound.js GitHub repository.
+
+### List of changes in p5.sound.js API
+Most things are the same between p5.sound.js 1.x and 2.0, but there are some big differences: For starters, p5.sound.js 2.0 has fewer classes than the original library. There is also a more streamlined API (fewer redundancies, etc...). If you need access to some of the deprecated classes such as `p5.MonoSynth()` for example, use [Tone.js](https://tonejs.github.io/). For more information on these changes read the announcement for the new p5.sound.js library [here](https://medium.com/processing-foundation/announcing-the-new-p5-sound-js-library-42efc154bed0).
+
+
+
+### ...loading sounds with loadSound
+One of the biggest changes in the new p5.sound.js library is how we handle loading sound files. Instead of loading a sound file in the `preload()` function, the `loadSound(...)` function returns a **promise** in an `async/await` in `setup()` (or with callbacks)  _(to revert to 1.x use, include [preload.js](https://github.com/processing/p5.js-compatibility/blob/main/src/preload.js))_
+
+For example:
+
+```js
+let sound;
+
+async function setup() {
+  sound = await loadSound('path/to/soundFile');
+  
+  createCanvas(100, 100);
+  describe(
+    'A gray square with text that reads "click to play the sound".');
+  textWrap(WORD)
+  textAlign(CENTER)
+}
+
+function draw() {
+  background(200);
+  text('click to play the sound', 0, 20, width);
+}
+
+function mousePressed() {
+  sound.play();
+}
+```
+
+### Deprecated Classes
+When using a deprecated class such as `MonoSynth, EQ, Convolver, Distortion, OnsetDetect, Filter, Effect, Compressor, AudioVoice, Part, Phrase, PolySynth, Pulse, Score, SoundLoop` you will see an alert that tells you that the class 'is deprecated' and to 'Try using the equivalent Tone.js class'.
+
+To combine p5.sound.js and Tone.js nodes, you will have to pass the p5.sound.js `AudioContext` to Tone.js. You can do this like so:
+
+```html
+<!-- include Tone.js after the p5.sound.js library-->
+ <script src="p5.sound.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/tone@15.0.2/build/Tone.js"></script>
+
+```
+
+```js
+let sound_location = 0
+let panner, synthy
+
+function setup() {
+  createCanvas(400, 400)
+
+  // Tone.js is loaded from its own script tag. Hand it p5.sound's audio
+  // context before making any Tone.js object, and the two libraries build on
+  // one context, so their nodes can be connected to each other.
+  Tone.setContext(getAudioContext())
+
+  synthy = new Tone.MonoSynth()
+  panner = new p5.Panner()
+
+  // connect a Tone.js audio node to a p5 sound effect
+  panner.setInput(synthy)
+
+  describe('A grey sketch that plays a Tone.js synth through a p5.sound panner. Click to play a note at a random stereo position.')
+}
+
+function draw() {
+  background(220)
+  text("sound is here", ((sound_location + 1) * 0.5 ) * width, height/2)
+}
+
+function mousePressed() {
+  sound_location = random(-1,1)
+  panner.pan(sound_location)
+  synthy.triggerAttackRelease("D#5", (1.5))
+}
+
+```
+
+### List of Breaking Changes
+Here is the spreadsheet that lists the deprecated clases and methods.
+
+[List of Changes](https://docs.google.com/spreadsheets/d/1pL0EVOlRTtfc6kcmK2rd9tZXpZal8FkJKALPb7app28/edit?gid=0#gid=0)
+</details>
+
+## ...custom shaders
+
+<details><summary>In most cases, nothing needs to change! However, if your sketch relied on p5 automatically turning off a shader, you may need to manually scope your shader between a `push` and `pop`.</summary>
+
+For example, if you had a shader that did not use p5's lighting system, in 1.x, it would stop applying once you turn on lighting:
+```js
+shader(myShaderWithoutLighting);
+sphere(100); // Draws with your shader
+
+translate(100, 0);
+lights();
+sphere(100); // Draws without your shader
+```
+
+In 2.x, you would need to manually contain the shader to the first shape:
+```js
+push();
+shader(myShaderWithoutLighting);
+sphere(100);
+pop(); // Resets the shader
+
+translate(100, 0);
+lights();
+sphere(100);
+```
+
+Alternatively, you can use `resetShader`:
+```js
+shader(myShaderWithoutLighting);
+sphere(100);
+resetShader(); // Resets the shader
+
+translate(100, 0);
+lights();
+sphere(100);
+```
+</details>
